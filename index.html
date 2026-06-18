@@ -101,7 +101,7 @@ tr:hover td { background: #f7fafc; }
 </div>
 <div class="modal-overlay" id="edit-modal">
 <div class="modal">
-<h3>&#x270F;&#xFE0F; تعديل الإجازة</h3>
+<h3>تعديل الإجازة</h3>
 <div id="msg-edit" class="msg"></div>
 <input type="hidden" id="edit-id">
 <div class="form-grid">
@@ -111,7 +111,7 @@ tr:hover td { background: #f7fafc; }
 <div class="form-group"><label>السبب</label><input type="text" id="edit-reason" placeholder="مثال: إجازة سنوية"></div>
 </div>
 <div class="modal-actions">
-<button class="btn btn-secondary" onclick="closeEditModal()">X الغاء</button>
+<button class="btn btn-secondary" onclick="closeEditModal()">الغاء</button>
 <button class="btn btn-primary" onclick="saveEdit()">حفظ</button>
 </div>
 </div>
@@ -119,6 +119,8 @@ tr:hover td { background: #f7fafc; }
 <script>
 const SUPABASE_URL = 'https://wtbypuieilnicomwnwax.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_T88-VXy8YDYL91hk9IgWGg_l0B6Ax4w';
+let leavesData = [];
+
 async function api(path, method, body) {
   method = method || 'GET';
   const opts = { method, headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Prefer': method === 'PATCH' ? 'return=representation' : '' } };
@@ -162,6 +164,7 @@ function populateEditEmployees() {
 }
 async function loadLeaves() {
   const leaves = await api('leaves?select=*,employees(name)&status=eq.approved&order=start_date.desc');
+  leavesData = leaves;
   const today2 = new Date().toISOString().split('T')[0];
   leaves.sort(function(a, b) {
     const aEnded = a.end_date < today2;
@@ -194,24 +197,28 @@ async function loadLeaves() {
     tableDiv.innerHTML = '<div class="empty">لا توجد اجازات مسجلة</div>';
     return;
   }
-  tableDiv.innerHTML = '<table><thead><tr><th>الموظف</th><th>تاريخ البداية</th><th>تاريخ النهاية</th><th>المدة</th><th>السبب</th><th>الحالة</th><th>اجراءات</th></tr></thead><tbody>' +
-  leaves.map(function(l) {
+  let html = '<table><thead><tr><th>الموظف</th><th>تاريخ البداية</th><th>تاريخ النهاية</th><th>المدة</th><th>السبب</th><th>الحالة</th><th>اجراءات</th></tr></thead><tbody>';
+  leaves.forEach(function(l) {
     const st = getStatus(l.start_date, l.end_date);
     const days = diffDays(l.start_date, l.end_date);
-    return '<tr><td><strong>' + (l.employees ? l.employees.name : '-') + '</strong></td>' +
+    html += '<tr>' +
+      '<td><strong>' + (l.employees ? l.employees.name : '-') + '</strong></td>' +
       '<td>' + formatDate(l.start_date) + '</td>' +
       '<td>' + formatDate(l.end_date) + '</td>' +
       '<td>' + daysLabel(days) + '</td>' +
       '<td>' + (l.reason || '-') + '</td>' +
       '<td><span class="badge ' + st.cls + '">' + st.label + '</span></td>' +
       '<td style="display:flex;gap:6px;flex-wrap:wrap;">' +
-      '<button class="btn btn-edit" onclick='openEditModal(' + JSON.stringify(l) + ')'>تعديل</button>' +
-      '<button class="btn btn-danger" onclick="deleteLeave(' + l.id + ')">حذف</button>' +
+      '<button class="btn btn-edit" data-lid="' + l.id + '" onclick="openEditById(this.dataset.lid)">تعديل</button>' +
+      '<button class="btn btn-danger" data-lid="' + l.id + '" onclick="deleteLeave(this.dataset.lid)">حذف</button>' +
       '</td></tr>';
-  }).join('') +
-  '</tbody></table>';
+  });
+  html += '</tbody></table>';
+  tableDiv.innerHTML = html;
 }
-function openEditModal(leave) {
+function openEditById(id) {
+  const leave = leavesData.find(function(l) { return l.id == id; });
+  if (!leave) return;
   document.getElementById('edit-id').value = leave.id;
   document.getElementById('edit-start').value = leave.start_date;
   document.getElementById('edit-end').value = leave.end_date;
@@ -236,7 +243,7 @@ async function saveEdit() {
     msg.className = 'msg msg-error'; msg.style.display = 'block'; return;
   }
   try {
-    await api('leaves?id=eq.' + id, 'PATCH', { employee_id: parseInt(employee_id), start_date, end_date, reason });
+    await api('leaves?id=eq.' + id, 'PATCH', { employee_id: parseInt(employee_id), start_date: start_date, end_date: end_date, reason: reason });
     closeEditModal();
     showMsg('msg-del', 'success', 'تم تعديل الاجازة بنجاح');
     await loadLeaves();
@@ -271,7 +278,7 @@ async function addLeave() {
     showMsg('msg-add', 'error', 'يرجى اختيار الموظف وتحديد التواريخ'); return;
   }
   try {
-    await api('leaves', 'POST', { employee_id: parseInt(employee_id), start_date, end_date, reason, status: 'approved' });
+    await api('leaves', 'POST', { employee_id: parseInt(employee_id), start_date: start_date, end_date: end_date, reason: reason, status: 'approved' });
     document.getElementById('f-employee').value = '';
     document.getElementById('f-start').value = '';
     document.getElementById('f-end').value = '';
@@ -286,7 +293,7 @@ async function addEmployee() {
   const name = document.getElementById('f-new-emp').value.trim();
   if (!name) { showMsg('msg-add', 'error', 'يرجى ادخال اسم الموظف'); return; }
   try {
-    await api('employees', 'POST', { name });
+    await api('employees', 'POST', { name: name });
     document.getElementById('f-new-emp').value = '';
     showMsg('msg-add', 'success', 'تمت اضافة الموظف: ' + name);
     await loadEmployees();
@@ -305,20 +312,21 @@ async function loadPending() {
     pending.forEach(function(l) {
       const emp = l.employees ? l.employees.name : '-';
       const days = diffDays(l.start_date, l.end_date);
-      h += '<tr><td><strong>' + emp + '</strong></td>' +
+      h += '<tr>' +
+        '<td><strong>' + emp + '</strong></td>' +
         '<td>' + formatDate(l.start_date) + '</td>' +
         '<td>' + formatDate(l.end_date) + '</td>' +
         '<td>' + daysLabel(days) + '</td>' +
         '<td>' + (l.reason || '-') + '</td>' +
         '<td style="display:flex;gap:6px;flex-wrap:wrap;">' +
-        '<button class="btn btn-success" style="font-size:12px;padding:6px 14px;" onclick="approveLeave(' + l.id + ')">قبول</button>' +
-        '<button class="btn btn-danger" style="font-size:12px;padding:6px 14px;" onclick="rejectLeave(' + l.id + ')">رفض</button>' +
+        '<button class="btn btn-success" style="font-size:12px;padding:6px 14px;" data-lid="' + l.id + '" onclick="approveLeave(this.dataset.lid)">قبول</button>' +
+        '<button class="btn btn-danger" style="font-size:12px;padding:6px 14px;" data-lid="' + l.id + '" onclick="rejectLeave(this.dataset.lid)">رفض</button>' +
         '</td></tr>';
     });
     h += '</tbody></table>';
     div.innerHTML = h;
   } catch(e) {
-    document.getElementById('pending-table').innerHTML = '<div class="empty">خطأ في التحميل</div>';
+    document.getElementById('pending-table').innerHTML = '<div class="empty">خطأ في التحميل: ' + e.message + '</div>';
   }
 }
 async function approveLeave(id) {
