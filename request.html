@@ -2,215 +2,22 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>طلب إجازة</title>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<meta http-equiv="refresh" content="0; url=employees.html">
+<title>جاري التحويل...</title>
 <style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: 'Segoe UI', Tahoma, sans-serif; background: #f0f4f8; color: #2d3748; direction: rtl; min-height: 100vh; display: flex; flex-direction: column; }
-.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 24px 32px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-.header h1 { font-size: 26px; font-weight: 700; }
-.header p { opacity: 0.85; margin-top: 4px; font-size: 14px; }
-.container { max-width: 640px; margin: 40px auto; padding: 0 16px; width: 100%; }
-.card { background: white; border-radius: 16px; padding: 32px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-.card h2 { font-size: 20px; font-weight: 700; margin-bottom: 24px; color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 12px; }
-.form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 18px; }
-.form-group label { font-size: 13px; font-weight: 600; color: #4a5568; }
-.form-group input, .form-group select, .form-group textarea { padding: 11px 14px; border: 2px solid #e2e8f0; border-radius: 10px; font-size: 14px; font-family: inherit; direction: rtl; transition: border-color 0.2s; }
-.form-group input:focus, .form-group select:focus, .form-group textarea:focus { outline: none; border-color: #667eea; }
-.form-group textarea { resize: vertical; min-height: 80px; }
-.btn { width: 100%; padding: 13px; border: none; border-radius: 10px; cursor: pointer; font-size: 15px; font-weight: 700; font-family: inherit; transition: all 0.2s; margin-top: 8px; }
-.btn-primary { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
-.btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-.btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-.msg { padding: 14px 18px; border-radius: 10px; margin-bottom: 18px; font-size: 14px; font-weight: 600; display: none; }
-.msg-success { background: #c6f6d5; color: #276749; border: 1px solid #9ae6b4; display: block; }
-.msg-error { background: #fed7d7; color: #9b2c2c; border: 1px solid #feb2b2; display: block; }
-.msg-warning { background: #fefcbf; color: #744210; border: 1px solid #f6e05e; display: block; }
-.conflict-box { background: #fff5f5; border: 2px solid #fc8181; border-radius: 12px; padding: 16px; margin-bottom: 18px; display: none; }
-.conflict-box h3 { color: #c53030; font-size: 15px; margin-bottom: 10px; }
-.conflict-box ul { list-style: none; }
-.conflict-box li { padding: 6px 0; font-size: 13px; color: #742a2a; border-bottom: 1px solid #fed7d7; }
-.conflict-box li:last-child { border-bottom: none; }
-.days-preview { background: #ebf8ff; border: 1px solid #bee3f8; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #2c5282; margin-top: 6px; display: none; font-weight: 600; }
-.nav-links { text-align: center; margin-top: 20px; }
-.nav-links a { color: #667eea; text-decoration: none; font-size: 13px; margin: 0 8px; }
+body { font-family: 'Segoe UI'; display: flex; align-items: center; justify-content: center; min-height: 100vh; background: #f0f4f8; direction: rtl; }
+.box { text-align: center; background: white; padding: 40px; border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+.box h2 { color: #38a169; margin-bottom: 12px; }
+.box p { color: #718096; margin-bottom: 20px; }
+.box a { color: #667eea; font-weight: 600; }
 </style>
 </head>
 <body>
-<div class="header">
-  <h1>📋 نظام تتبع الإجازات</h1>
-  <p>تقديم طلب إجازة جديد</p>
+<div class="box">
+  <h2>جاري التحويل...</h2>
+  <p>تم نقل صفحة طلب الاجازة الى صفحة الموظفين</p>
+  <a href="employees.html">اضغط هنا اذا لم يتم التحويل</a>
 </div>
-<div class="container">
-  <div class="card">
-    <h2>📝 نموذج طلب إجازة</h2>
-    <div id="msg" class="msg"></div>
-    <div id="conflict-box" class="conflict-box">
-      <h3>⚠️ تعارض في التواريخ!</h3>
-      <p style="font-size:13px;color:#742a2a;margin-bottom:8px;">يوجد موظف آخر في إجازة خلال هذه الفترة — لا يمكن رفع الطلب.</p>
-      <ul id="conflict-list"></ul>
-    </div>
-    <div class="form-group">
-      <label>الموظف</label>
-      <select id="f-employee"><option value="">اختر اسمك...</option></select>
-    </div>
-    <div class="form-group">
-      <label>تاريخ بداية الإجازة</label>
-      <input type="date" id="f-start" onchange="checkConflict()">
-    </div>
-    <div class="form-group">
-      <label>تاريخ نهاية الإجازة</label>
-      <input type="date" id="f-end" onchange="checkConflict()">
-      <div id="days-preview" class="days-preview"></div>
-    </div>
-    <div class="form-group">
-      <label>سبب الإجازة</label>
-      <input type="text" id="f-reason" placeholder="مثال: إجازة سنوية، ظروف شخصية...">
-    </div>
-    <button class="btn btn-primary" id="submit-btn" onclick="submitRequest()" disabled>إرسال الطلب للمدير</button>
-  </div>
-  <div class="nav-links">
-    <a href="employees.html">← عرض جدول الإجازات</a>
-  </div>
-</div>
-<script>
-const SUPABASE_URL = 'https://wtbypuieilnicomwnwax.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_T88-VXy8YDYL91hk9IgWGg_l0B6Ax4w';
-const EMAILJS_SERVICE = 'service_9vkcpeo';
-const EMAILJS_TEMPLATE = 'template_xykx1lg';
-const EMAILJS_PUBLIC_KEY = 'sltwrjL9WXGInu62s';
-const ADMIN_EMAIL = '3zzawe1@gmail.com';
-const ACTION_URL = 'https://3zzawe1-boop.github.io/leave-tracker/action.html';
-
-let conflictFound = false;
-let employees = [];
-
-async function api(path, method, body) {
-  const opts = { method: method || 'GET', headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY, 'Authorization': 'Bearer ' + SUPABASE_KEY, 'Prefer': method === 'POST' ? 'return=representation' : '' } };
-  if (body) opts.body = JSON.stringify(body);
-  const res = await fetch(SUPABASE_URL + '/rest/v1/' + path, opts);
-  return res.ok ? res.json() : null;
-}
-
-function calcDays(s, e) { return Math.round((new Date(e) - new Date(s)) / 86400000) + 1; }
-function fmt(d) { return new Date(d).toLocaleDateString('ar-SA', {year:'numeric', month:'short', day:'numeric'}); }
-
-async function loadEmployees() {
-  employees = await api('employees?select=*&order=name') || [];
-  const sel = document.getElementById('f-employee');
-  employees.forEach(e => {
-    const opt = document.createElement('option');
-    opt.value = e.id; opt.textContent = e.name; sel.appendChild(opt);
-  });
-}
-
-async function checkConflict() {
-  const start = document.getElementById('f-start').value;
-  const end = document.getElementById('f-end').value;
-  const btn = document.getElementById('submit-btn');
-  const preview = document.getElementById('days-preview');
-  const conflictBox = document.getElementById('conflict-box');
-  
-  if (!start || !end || start > end) {
-    conflictBox.style.display = 'none';
-    preview.style.display = 'none';
-    btn.disabled = true;
-    return;
-  }
-  
-  const days = calcDays(start, end);
-  preview.textContent = 'مدة الإجازة: ' + days + ' يوم';
-  preview.style.display = 'block';
-  
-  // فحص التعارض: موظف واحد فقط في إجازة
-  const existing = await api('leaves?select=*,employees(name)&status=eq.approved&or=(start_date.lte.' + end + ',end_date.gte.' + start + ')') || [];
-  
-  // فحص أدق: التقاطع الحقيقي
-  const conflicts = existing.filter(l => {
-    return l.start_date <= end && l.end_date >= start;
-  });
-  
-  if (conflicts.length > 0) {
-    conflictFound = true;
-    btn.disabled = true;
-    const list = document.getElementById('conflict-list');
-    list.innerHTML = '';
-    conflicts.forEach(c => {
-      const emp = c.employees ? c.employees.name : '-';
-      list.innerHTML += '<li>👤 ' + emp + ' — من ' + fmt(c.start_date) + ' إلى ' + fmt(c.end_date) + '</li>';
-    });
-    conflictBox.style.display = 'block';
-  } else {
-    conflictFound = false;
-    btn.disabled = false;
-    conflictBox.style.display = 'none';
-  }
-}
-
-async function submitRequest() {
-  const empId = document.getElementById('f-employee').value;
-  const start = document.getElementById('f-start').value;
-  const end = document.getElementById('f-end').value;
-  const reason = document.getElementById('f-reason').value;
-  const msgEl = document.getElementById('msg');
-  
-  if (!empId || !start || !end) {
-    msgEl.className = 'msg msg-error'; msgEl.textContent = '⚠️ يرجى ملء جميع الحقول.'; return;
-  }
-  if (conflictFound) {
-    msgEl.className = 'msg msg-error'; msgEl.textContent = '⚠️ لا يمكن الإرسال بسبب التعارض.'; return;
-  }
-  
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true; btn.textContent = 'جاري الإرسال...';
-  
-  const emp = employees.find(e => e.id == empId);
-  const days = calcDays(start, end);
-  
-  // إضافة الطلب بحالة pending
-  const result = await api('leaves', 'POST', { employee_id: parseInt(empId), start_date: start, end_date: end, reason: reason || 'إجازة سنوية', status: 'pending' });
-  
-  if (!result || !result[0]) {
-    msgEl.className = 'msg msg-error'; msgEl.textContent = '❌ حدث خطأ، حاول مرة أخرى.';
-    btn.disabled = false; btn.textContent = 'إرسال الطلب للمدير'; return;
-  }
-  
-  const leaveId = result[0].id;
-  const approveUrl = ACTION_URL + '?action=approve&id=' + leaveId;
-  const rejectUrl = ACTION_URL + '?action=reject&id=' + leaveId;
-  
-  // إرسال الإيميل
-  try {
-    emailjs.init(EMAILJS_PUBLIC_KEY);
-    await emailjs.send(EMAILJS_SERVICE, EMAILJS_TEMPLATE, {
-      to_email: ADMIN_EMAIL,
-      employee_name: emp.name,
-      start_date: fmt(start),
-      end_date: fmt(end),
-      days_count: days,
-      reason: reason || 'إجازة سنوية',
-      approve_url: approveUrl,
-      reject_url: rejectUrl,
-      leave_id: leaveId
-    });
-    msgEl.className = 'msg msg-success';
-    msgEl.textContent = '✅ تم إرسال طلبك للمدير! سيتم إشعارك بالقرار.';
-  } catch(e) {
-    // الإيميل فشل لكن الطلب اتسجل
-    msgEl.className = 'msg msg-warning';
-    msgEl.textContent = '✅ تم تسجيل طلبك! (تحقق من إعدادات الإيميل)';
-  }
-  
-  btn.textContent = 'تم الإرسال ✓';
-  document.getElementById('f-employee').value = '';
-  document.getElementById('f-start').value = '';
-  document.getElementById('f-end').value = '';
-  document.getElementById('f-reason').value = '';
-  document.getElementById('days-preview').style.display = 'none';
-}
-
-loadEmployees();
-</script>
+<script>window.location.replace('employees.html');</script>
 </body>
 </html>
