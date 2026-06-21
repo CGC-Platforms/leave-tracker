@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>نظام تتبع الاجازات - الموظفين</title>
+<title>نظام تتبع الإجازات - الموظفين</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: Segoe UI, Tahoma, sans-serif; background: #f0f4f8; color: #2d3748; direction: rtl; }
@@ -57,49 +57,48 @@ tr:hover td { background: #f7fafc; }
 </head>
 <body>
 <nav class="navbar">
-  <a href="index.html" class="navbar-brand">نظام الاجازات</a>
-  <div class="navbar-links">
-    <a href="employees.html" class="active">صفحة الموظفين</a>
-    <a href="index.html">لوحة الادارة</a>
-  </div>
+<a href="index.html" class="navbar-brand">نظام الإجازات</a>
+<div class="navbar-links">
+<a href="employees.html" class="active">صفحة الموظفين</a>
+</div>
 </nav>
 <div class="header">
-  <div><h1>نظام تتبع الاجازات</h1><p>عرض الاجازات وتقديم الطلبات</p></div>
-  <div style="display:flex;gap:10px;align-items:center;">
-    <span class="header-badge">الموظفين</span>
-    <button class="refresh-btn" onclick="loadAll()">تحديث</button>
-  </div>
+<div><h1>نظام تتبع الإجازات</h1><p>عرض الإجازات وتقديم الطلبات</p></div>
+<div style="display:flex;gap:10px;align-items:center;">
+<span class="header-badge">الموظفين</span>
+<button class="refresh-btn" onclick="loadAll()">تحديث</button>
+</div>
 </div>
 <div class="container">
-  <div class="stats">
-    <div class="stat-card"><div class="num" id="stat-total">-</div><div class="label">اجمالي الاجازات</div></div>
-    <div class="stat-card"><div class="num" id="stat-active" style="color:#38a169">-</div><div class="label">في اجازة الان</div></div>
-    <div class="stat-card"><div class="num" id="stat-upcoming" style="color:#3182ce">-</div><div class="label">اجازات قادمة</div></div>
-    <div class="stat-card"><div class="num" id="stat-employees" style="color:#805ad5">-</div><div class="label">عدد الموظفين</div></div>
-  </div>
-  <div class="card today-section">
-    <h2>الحالة اليوم</h2>
-    <div id="today-info" class="loading">جاري التحميل...</div>
-  </div>
-  <div class="card">
-    <h2>جميع الاجازات الموافق عليها</h2>
-    <div id="leaves-table" class="loading">جاري التحميل...</div>
-  </div>
-  <div class="card request-card">
-    <h2>تقديم طلب اجازة</h2>
-    <div class="success-msg" id="success-msg">تم ارسال طلبك بنجاح! سيتم مراجعته من قبل الادارة.</div>
-    <div class="conflict-warning" id="conflict-warning"></div>
-    <form id="request-form" onsubmit="submitRequest(event)">
-      <div class="form-grid">
-        <div class="form-group"><label>الاسم</label><select id="req-name" required><option value="">-- اختر اسمك --</option></select></div>
-        <div class="form-group"><label>السبب</label><input type="text" id="req-reason" placeholder="سبب الاجازة" required /></div>
-        <div class="form-group"><label>تاريخ البداية</label><input type="date" id="req-start" required onchange="onStartChange()" /></div>
-        <div class="form-group"><label>تاريخ النهاية</label><input type="date" id="req-end" required onchange="onEndChange()" /><span class="days-preview" id="days-preview"></span></div>
-        <div class="form-group full"><label>ملاحظات اضافية (اختياري)</label><textarea id="req-notes" placeholder="اي تفاصيل اضافية..."></textarea></div>
-      </div>
-      <button type="submit" class="submit-btn" id="submit-btn">ارسال الطلب</button>
-    </form>
-  </div>
+<div class="stats">
+<div class="stat-card"><div class="num" id="stat-total">-</div><div class="label">إجمالي الإجازات</div></div>
+<div class="stat-card"><div class="num" id="stat-active" style="color:#38a169">-</div><div class="label">في إجازة الآن</div></div>
+<div class="stat-card"><div class="num" id="stat-upcoming" style="color:#3182ce">-</div><div class="label">إجازات قادمة</div></div>
+<div class="stat-card"><div class="num" id="stat-employees" style="color:#805ad5">-</div><div class="label">عدد الموظفين</div></div>
+</div>
+<div class="card today-section">
+<h2>الحالة اليوم</h2>
+<div id="today-info" class="loading">جارٍ التحميل...</div>
+</div>
+<div class="card">
+<h2>جميع الإجازات الموافق عليها</h2>
+<div id="leaves-table" class="loading">جارٍ التحميل...</div>
+</div>
+<div class="card request-card">
+<h2>تقديم طلب إجازة</h2>
+<div class="success-msg" id="success-msg">تم إرسال طلبك بنجاح! سيتم مراجعته من قِبَل الإدارة.</div>
+<div class="conflict-warning" id="conflict-warning"></div>
+<form id="request-form" onsubmit="submitRequest(event)">
+<div class="form-grid">
+<div class="form-group"><label>الاسم</label><select id="req-name" required><option value="">-- اختر اسمك --</option></select></div>
+<div class="form-group"><label>السبب</label><input type="text" id="req-reason" placeholder="سبب الإجازة" required /></div>
+<div class="form-group"><label>تاريخ البداية</label><input type="date" id="req-start" required onchange="onStartChange()" /></div>
+<div class="form-group"><label>تاريخ النهاية</label><input type="date" id="req-end" required onchange="onEndChange()" /><span class="days-preview" id="days-preview"></span></div>
+<div class="form-group full"><label>ملاحظات إضافية (اختياري)</label><textarea id="req-notes" placeholder="أي تفاصيل إضافية..."></textarea></div>
+</div>
+<button type="submit" class="submit-btn" id="submit-btn">إرسال الطلب</button>
+</form>
+</div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
@@ -114,79 +113,111 @@ emailjs.init(EMAILJS_PUBLIC_KEY);
 let allApprovedLeaves=[],allEmployees=[];
 async function api(path,method="GET",body=null){const opts={method,headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY,"Content-Type":"application/json","Prefer":method==="POST"?"return=representation":""}};if(body)opts.body=JSON.stringify(body);const res=await fetch(SUPABASE_URL+"/rest/v1/"+path,opts);return res.ok?res.json():[];}
 function getStatus(s,e){const t=new Date();t.setHours(0,0,0,0);const sd=new Date(s),ed=new Date(e);if(t>=sd&&t<=ed)return"active";if(t<sd)return"upcoming";return"ended";}
-function statusBadge(st){if(st==="active")return'<span class="badge badge-active">في اجازة</span>';if(st==="upcoming")return'<span class="badge badge-upcoming">قادمة</span>';return'<span class="badge badge-ended">انتهت</span>';}
+function statusBadge(st){if(st==="active")return'<span class="badge badge-active">في إجازة</span>';if(st==="upcoming")return'<span class="badge badge-upcoming">قادمة</span>';return'<span class="badge badge-ended">انتهت</span>';}
 function calcDays(s,e){return Math.round((new Date(e)-new Date(s))/86400000)+1;}
 function fmt(d){return new Date(d).toLocaleDateString("ar-SA",{year:"numeric",month:"short",day:"numeric"});}
 async function loadAll(){
-  const[leaves,employees]=await Promise.all([api("leaves?select=*,employees(name)&status=eq.approved&order=start_date.desc"),api("employees?select=*&order=name")]);
-  allApprovedLeaves=leaves;allEmployees=employees;
-  let active=0,upcoming=0;
-  leaves.forEach(l=>{const s=getStatus(l.start_date,l.end_date);if(s==="active")active++;if(s==="upcoming")upcoming++;});
-  document.getElementById("stat-total").textContent=leaves.length;
-  document.getElementById("stat-active").textContent=active;
-  document.getElementById("stat-upcoming").textContent=upcoming;
-  document.getElementById("stat-employees").textContent=employees.length;
-  renderToday(leaves);renderTable(leaves);loadEmployeeSelect(employees);
-}
-function loadEmployeeSelect(emps){const sel=document.getElementById("req-name");sel.innerHTML='<option value="">-- اختر اسمك --</option>';emps.forEach(e=>{const opt=document.createElement("option");opt.value=e.id;opt.textContent=e.name;sel.appendChild(opt);});}
-function renderToday(leaves){
+  const [leaves,emps]=await Promise.all([
+    api("leaves?status=eq.approved&select=*"),
+    api("employees?select=*&order=name.asc")
+  ]);
+  allApprovedLeaves=leaves.sort((a,b)=>new Date(a.start_date)-new Date(b.start_date));
+  allEmployees=emps;
+  const sel=document.getElementById("req-name");
+  sel.innerHTML='<option value="">-- اختر اسمك --</option>';
+  emps.forEach(function(e){sel.innerHTML+='<option value="'+e.name+'">'+e.name+'</option>';});
   const today=new Date();today.setHours(0,0,0,0);
-  const active=leaves.filter(l=>getStatus(l.start_date,l.end_date)==="active");
-  const up7=leaves.filter(l=>{const d=Math.round((new Date(l.start_date)-today)/86400000);return d>0&&d<=7;});
-  let html="";
-  if(!active.length&&!up7.length){html='<div class="empty">لا يوجد احد في اجازة اليوم</div>';}
-  else{
-    if(active.length){html+='<p style="font-weight:600;color:#276749;margin-bottom:10px;">في اجازة الان:</p><ul style="list-style:none;margin-bottom:16px;">';active.forEach(l=>{const emp=l.employees?l.employees.name:"-";html+='<li style="padding:8px 12px;background:#f0fff4;border-radius:8px;margin-bottom:6px;border-right:3px solid #38a169;"><strong>'+emp+"</strong> - "+(l.reason||"اجازة")+" ("+calcDays(l.start_date,l.end_date)+" يوم) | ينتهي: "+fmt(l.end_date)+"</li>";});html+="</ul>";}
-    if(up7.length){html+='<p style="font-weight:600;color:#2c5282;margin-bottom:10px;">اجازات قادمة خلال 7 ايام:</p><ul style="list-style:none;">';up7.forEach(l=>{const emp=l.employees?l.employees.name:"-";const d=Math.round((new Date(l.start_date)-today)/86400000);html+='<li style="padding:8px 12px;background:#ebf8ff;border-radius:8px;margin-bottom:6px;border-right:3px solid #3182ce;"><strong>'+emp+"</strong> - "+(l.reason||"اجازة")+" | يبدا بعد "+d+" يوم ("+fmt(l.start_date)+")</li>";});html+="</ul>";}
-  }
-  document.getElementById("today-info").innerHTML=html;
-}
-function renderTable(leaves){
-  if(!leaves.length){document.getElementById("leaves-table").innerHTML='<div class="empty">لا توجد اجازات</div>';return;}
-  let html='<table><thead><tr><th>#</th><th>الموظف</th><th>تاريخ البداية</th><th>تاريخ النهاية</th><th>عدد الايام</th><th>السبب</th><th>الحالة</th></tr></thead><tbody>';
-  leaves.forEach((l,i)=>{const emp=l.employees?l.employees.name:"-";html+="<tr><td>"+(i+1)+"</td><td><strong>"+emp+"</strong></td><td>"+fmt(l.start_date)+"</td><td>"+fmt(l.end_date)+"</td><td>"+calcDays(l.start_date,l.end_date)+" يوم</td><td>"+(l.reason||"-")+"</td><td>"+statusBadge(getStatus(l.start_date,l.end_date))+"</td></tr>";});
-  html+="</tbody></table>";
-  document.getElementById("leaves-table").innerHTML=html;
+  const active=allApprovedLeaves.filter(function(l){return getStatus(l.start_date,l.end_date)==="active";});
+  const upcoming=allApprovedLeaves.filter(function(l){return getStatus(l.start_date,l.end_date)==="upcoming";});
+  document.getElementById("stat-total").textContent=allApprovedLeaves.length;
+  document.getElementById("stat-active").textContent=active.length;
+  document.getElementById("stat-upcoming").textContent=upcoming.length;
+  document.getElementById("stat-employees").textContent=emps.length;
+  const todayEl=document.getElementById("today-info");
+  if(active.length===0){todayEl.innerHTML='<p class="empty">لا يوجد أحد في إجازة اليوم</p>';}
+  else{todayEl.innerHTML=active.map(function(l){return '<p style="font-size:15px;padding:8px 0;"><strong>'+l.employee_name+'</strong> — '+l.reason+' ('+fmt(l.start_date)+' إلى '+fmt(l.end_date)+')</p>';}).join('');}
+  const tbl=document.getElementById("leaves-table");
+  if(allApprovedLeaves.length===0){tbl.innerHTML='<p class="empty">لا توجد إجازات مسجّلة</p>';return;}
+  let rows='';
+  allApprovedLeaves.forEach(function(l,i){rows+='<tr><td>'+(i+1)+'</td><td>'+l.employee_name+'</td><td>'+fmt(l.start_date)+'</td><td>'+fmt(l.end_date)+'</td><td>'+calcDays(l.start_date,l.end_date)+' يوم</td><td>'+(l.reason||'-')+'</td><td>'+statusBadge(getStatus(l.start_date,l.end_date))+'</td></tr>';});
+  tbl.innerHTML='<table><thead><tr><th>#</th><th>الموظف</th><th>تاريخ البداية</th><th>تاريخ النهاية</th><th>عدد الأيام</th><th>السبب</th><th>الحالة</th></tr></thead><tbody>'+rows+'</tbody></table>';
 }
 function onStartChange(){
-  const startVal=document.getElementById("req-start").value;
-  const endInput=document.getElementById("req-end");
-  if(startVal){const nextDay=new Date(startVal);nextDay.setDate(nextDay.getDate()+1);const minEnd=nextDay.toISOString().split("T")[0];endInput.min=minEnd;if(endInput.value&&endInput.value<=startVal)endInput.value=minEnd;}
-  updateDaysPreview();checkConflict();
+  var s=document.getElementById("req-start").value;
+  var endEl=document.getElementById("req-end");
+  if(s){
+    var next=new Date(s);next.setDate(next.getDate()+1);
+    var minStr=next.toISOString().split("T")[0];
+    endEl.min=minStr;
+    if(endEl.value&&endEl.value<=s){endEl.value=minStr;}
+  }
+  updateDaysPreview();
+  checkConflict();
 }
 function onEndChange(){updateDaysPreview();checkConflict();}
-function updateDaysPreview(){const s=document.getElementById("req-start").value,e=document.getElementById("req-end").value;document.getElementById("days-preview").textContent=(s&&e&&e>s)?calcDays(s,e)+" يوم":"";}
-function checkConflict(){
-  const s=document.getElementById("req-start").value,e=document.getElementById("req-end").value;
-  const warning=document.getElementById("conflict-warning"),btn=document.getElementById("submit-btn");
-  if(!s||!e){warning.classList.remove("show");btn.disabled=false;return;}
-  const conflicts=allApprovedLeaves.filter(l=>!(e<l.start_date||s>l.end_date));
-  if(conflicts.length>0){const names=conflicts.map(l=>l.employees?l.employees.name:"-").join("، ");warning.innerHTML="تحذير: يوجد تعارض مع اجازة <strong>"+names+"</strong>. لا يمكن التقديم.";warning.classList.add("show");btn.disabled=true;}
-  else{warning.classList.remove("show");btn.disabled=false;}
+function updateDaysPreview(){
+  var s=document.getElementById("req-start").value;
+  var e=document.getElementById("req-end").value;
+  var prev=document.getElementById("days-preview");
+  if(s&&e&&e>s){prev.textContent="عدد الأيام: "+calcDays(s,e)+" يوم";}
+  else{prev.textContent="";}
 }
-async function submitRequest(event){
-  event.preventDefault();
-  const btn=document.getElementById("submit-btn");
-  btn.disabled=true;btn.textContent="جاري الارسال...";
-  const empId=document.getElementById("req-name").value;
-  const empName=document.getElementById("req-name").selectedOptions[0].textContent;
-  const startDate=document.getElementById("req-start").value;
-  const endDate=document.getElementById("req-end").value;
-  const reason=document.getElementById("req-reason").value;
-  const notes=document.getElementById("req-notes").value;
+function checkConflict(){
+  var s=document.getElementById("req-start").value;
+  var e=document.getElementById("req-end").value;
+  var warn=document.getElementById("conflict-warning");
+  var btn=document.getElementById("submit-btn");
+  if(!s||!e){warn.classList.remove("show");btn.disabled=false;return;}
+  var sd=new Date(s),ed=new Date(e);
+  var conflict=null;
+  for(var i=0;i<allApprovedLeaves.length;i++){
+    var l=allApprovedLeaves[i];
+    var ls=new Date(l.start_date),le=new Date(l.end_date);
+    if(sd<=le&&ed>=ls){conflict=l;break;}
+  }
+  if(conflict){
+    warn.textContent="تعارض! "+conflict.employee_name+" في إجازة من "+fmt(conflict.start_date)+" إلى "+fmt(conflict.end_date)+". لا يمكن تقديم طلب في هذه الفترة.";
+    warn.classList.add("show");btn.disabled=true;
+  } else {
+    warn.classList.remove("show");btn.disabled=false;
+  }
+}
+async function submitRequest(ev){
+  ev.preventDefault();
+  var name=document.getElementById("req-name").value;
+  var reason=document.getElementById("req-reason").value;
+  var start=document.getElementById("req-start").value;
+  var end=document.getElementById("req-end").value;
+  var notes=document.getElementById("req-notes").value;
+  var btn=document.getElementById("submit-btn");
+  btn.disabled=true;btn.textContent="جارٍ الإرسال...";
   try{
-    const result=await api("leaves","POST",{employee_id:empId,start_date:startDate,end_date:endDate,reason:reason,notes:notes,status:"pending"});
-    const leaveId=Array.isArray(result)&&result[0]?result[0].id:"?";
-    const approveUrl=BASE_URL+"/action.html?action=approve&id="+leaveId;
-    const rejectUrl=BASE_URL+"/action.html?action=reject&id="+leaveId;
-    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{to_email:ADMIN_EMAIL,employee_name:empName,start_date:startDate,end_date:endDate,reason:reason,notes:notes||"لا يوجد",days_count:calcDays(startDate,endDate),approve_url:approveUrl,reject_url:rejectUrl});
+    var res=await api("leaves","POST",{employee_name:name,reason:reason,start_date:start,end_date:end,notes:notes,status:"pending"});
+    if(!res||res.length===0)throw new Error("فشل الحفظ");
+    var leave=res[0];
+    var days=calcDays(start,end);
+    await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{
+      to_email:ADMIN_EMAIL,
+      employee_name:name,
+      reason:reason,
+      start_date:start,
+      end_date:end,
+      days:days,
+      notes:notes||"لا يوجد",
+      approve_url:BASE_URL+"/action.html?action=approve&id="+leave.id,
+      reject_url:BASE_URL+"/action.html?action=reject&id="+leave.id
+    });
     document.getElementById("success-msg").classList.add("show");
     document.getElementById("request-form").reset();
     document.getElementById("days-preview").textContent="";
-    document.getElementById("conflict-warning").classList.remove("show");
     document.getElementById("req-end").min="";
-  }catch(err){alert("حدث خطأ: "+err.message);}
-  finally{btn.disabled=false;btn.textContent="ارسال الطلب";}
+    setTimeout(function(){document.getElementById("success-msg").classList.remove("show");},5000);
+  }catch(err){
+    alert("حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.");
+    console.error(err);
+  }
+  btn.disabled=false;btn.textContent="إرسال الطلب";
+  loadAll();
 }
 loadAll();
 </script>
