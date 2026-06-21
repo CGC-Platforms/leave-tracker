@@ -113,11 +113,12 @@ function getStatus(s,e){var t=new Date();t.setHours(0,0,0,0);var sd=new Date(s),
 function statusBadge(st){if(st==="active")return'<span class="badge badge-active">في إجازة</span>';if(st==="upcoming")return'<span class="badge badge-upcoming">قادمة</span>';return'<span class="badge badge-ended">انتهت</span>';}
 function calcDays(s,e){return Math.round((new Date(e)-new Date(s))/86400000)+1;}
 function fmt(d){return new Date(d).toLocaleDateString("ar-SA",{year:"numeric",month:"short",day:"numeric"});}
+function empName(l){return (l.employees&&l.employees.name)?l.employees.name:(l.employee_name||"-");}
 async function loadAll(){
   var results=await Promise.all([
-    api("leaves?status=eq.approved&select=*"),
+    api("leaves?status=eq.approved&select=*,employees(name)"),
     api("employees?select=*&order=name.asc"),
-    api("leaves?status=eq.pending&select=*")
+    api("leaves?status=eq.pending&select=*,employees(name)")
   ]);
   allLeaves=results[0].sort(function(a,b){return new Date(a.start_date)-new Date(b.start_date);});
   allEmployees=results[1];
@@ -129,13 +130,13 @@ async function loadAll(){
   document.getElementById("stat-employees").textContent=allEmployees.length;
   var sel=document.getElementById("add-name");
   sel.innerHTML='<option value="">-- اختر موظفاً --</option>';
-  allEmployees.forEach(function(e){sel.innerHTML+='<option value="'+e.name+'">'+e.name+'</option>';});
+  allEmployees.forEach(function(e){sel.innerHTML+='<option value="'+e.id+'">'+e.name+'</option>';});
   var pendSec=document.getElementById("pending-section");
   if(pendingLeaves.length>0){
     pendSec.style.display="block";
     var rows='';
     pendingLeaves.forEach(function(l){
-      rows+='<tr><td>'+l.employee_name+'</td><td>'+fmt(l.start_date)+'</td><td>'+fmt(l.end_date)+'</td><td>'+calcDays(l.start_date,l.end_date)+' يوم</td><td>'+(l.reason||'-')+'</td><td><button class="btn btn-approve" onclick="approvePending('+l.id+')">موافقة</button> <button class="btn btn-reject" onclick="rejectPending('+l.id+')">رفض</button></td></tr>';
+      rows+='<tr><td>'+empName(l)+'</td><td>'+fmt(l.start_date)+'</td><td>'+fmt(l.end_date)+'</td><td>'+calcDays(l.start_date,l.end_date)+' يوم</td><td>'+(l.reason||'-')+'</td><td><button class="btn btn-approve" onclick="approvePending('+l.id+')">موافقة</button> <button class="btn btn-reject" onclick="rejectPending('+l.id+')">رفض</button></td></tr>';
     });
     document.getElementById("pending-table").innerHTML='<table><thead><tr><th>الموظف</th><th>البداية</th><th>النهاية</th><th>الأيام</th><th>السبب</th><th>الإجراء</th></tr></thead><tbody>'+rows+'</tbody></table>';
   } else {
@@ -145,7 +146,7 @@ async function loadAll(){
   if(allLeaves.length===0){tbl.innerHTML='<p class="empty">لا توجد إجازات مسجّلة</p>';return;}
   var lrows='';
   allLeaves.forEach(function(l,i){
-    lrows+='<tr><td>'+(i+1)+'</td><td>'+l.employee_name+'</td><td>'+fmt(l.start_date)+'</td><td>'+fmt(l.end_date)+'</td><td>'+calcDays(l.start_date,l.end_date)+' يوم</td><td>'+(l.reason||'-')+'</td><td>'+statusBadge(getStatus(l.start_date,l.end_date))+'</td><td><button class="btn btn-delete" onclick="deleteLeave('+l.id+')">حذف</button></td></tr>';
+    lrows+='<tr><td>'+(i+1)+'</td><td>'+empName(l)+'</td><td>'+fmt(l.start_date)+'</td><td>'+fmt(l.end_date)+'</td><td>'+calcDays(l.start_date,l.end_date)+' يوم</td><td>'+(l.reason||'-')+'</td><td>'+statusBadge(getStatus(l.start_date,l.end_date))+'</td><td><button class="btn btn-delete" onclick="deleteLeave('+l.id+')">حذف</button></td></tr>';
   });
   tbl.innerHTML='<table><thead><tr><th>#</th><th>الموظف</th><th>تاريخ البداية</th><th>تاريخ النهاية</th><th>عدد الأيام</th><th>السبب</th><th>الحالة</th><th>إجراء</th></tr></thead><tbody>'+lrows+'</tbody></table>';
   var empList=document.getElementById("employees-list");
@@ -171,13 +172,13 @@ function updateAddDays(){
   else{prev.textContent="";}
 }
 async function addLeave(){
-  var name=document.getElementById("add-name").value;
+  var empId=document.getElementById("add-name").value;
   var reason=document.getElementById("add-reason").value;
   var start=document.getElementById("add-start").value;
   var end=document.getElementById("add-end").value;
-  if(!name||!start||!end){alert("يرجى تعبئة جميع الحقول المطلوبة");return;}
+  if(!empId||!start||!end){alert("يرجى تعبئة جميع الحقول المطلوبة");return;}
   if(end<=start){alert("تاريخ النهاية يجب أن يكون بعد تاريخ البداية");return;}
-  await api("leaves","POST",{employee_name:name,reason:reason,start_date:start,end_date:end,status:"approved"});
+  await api("leaves","POST",{employee_id:parseInt(empId),reason:reason,start_date:start,end_date:end,status:"approved"});
   document.getElementById("add-name").value="";
   document.getElementById("add-reason").value="";
   document.getElementById("add-start").value="";
