@@ -3,23 +3,23 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>نظام تتبع الإجازات - إجراء</title>
+<title>قرار الإجازة</title>
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
 body { font-family: Segoe UI, Tahoma, sans-serif; background: #f0f4f8; color: #2d3748; direction: rtl; display: flex; align-items: center; justify-content: center; min-height: 100vh; }
-.card { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 4px 24px rgba(0,0,0,0.1); max-width: 480px; width: 100%; text-align: center; }
+.card { background: white; border-radius: 16px; padding: 40px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); max-width: 440px; width: 90%; text-align: center; }
 .icon { font-size: 56px; margin-bottom: 16px; }
-h1 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
+h2 { font-size: 22px; font-weight: 700; margin-bottom: 10px; }
 p { color: #718096; font-size: 15px; line-height: 1.6; }
-.btn { display: inline-block; margin-top: 24px; padding: 12px 28px; border-radius: 8px; background: #38a169; color: white; font-weight: 700; font-size: 15px; text-decoration: none; font-family: inherit; border: none; cursor: pointer; }
+.btn { display: inline-block; margin-top: 24px; padding: 12px 28px; border-radius: 8px; background: #667eea; color: white; text-decoration: none; font-weight: 600; font-size: 15px; }
 </style>
 </head>
 <body>
 <div class="card">
 <div class="icon" id="icon">⏳</div>
-<h1 id="title">جارٍ المعالجة...</h1>
+<h2 id="title">جارٍ المعالجة...</h2>
 <p id="msg"></p>
-<a href="index.html" class="btn" id="back-btn" style="display:none">العودة للوحة الإدارة</a>
+<a href="index.html" class="btn" id="backBtn" style="display:none">العودة للوحة الإدارة</a>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
@@ -29,83 +29,10 @@ const EMAILJS_SERVICE="service_9vkcpeo";
 const EMAILJS_TEMPLATE="template_xykx1lg";
 const EMAILJS_PUBLIC_KEY="sltwrjL9WXGInu62s";
 emailjs.init(EMAILJS_PUBLIC_KEY);
-async function api(path,method,body){
-method=method||"GET";
-var opts={method:method,headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY,"Content-Type":"application/json","Prefer":method==="POST"?"return=representation":""}};
-if(body)opts.body=JSON.stringify(body);
-var res=await fetch(SUPABASE_URL+"/rest/v1/"+path,opts);
-return res.ok?res.json():[];
-}
-function fmt(d){return new Date(d).toLocaleDateString("ar-SA",{year:"numeric",month:"short",day:"numeric"});}
-async function run(){
-var params=new URLSearchParams(window.location.search);
-var action=params.get("action");
-var id=params.get("id");
-var empEmail=params.get("email")||"";
-var empName=decodeURIComponent(params.get("name")||"");
-if(!action||!id){
-document.getElementById("icon").textContent="❌";
-document.getElementById("title").textContent="رابط غير صالح";
-document.getElementById("msg").textContent="الرابط المستخدم غير صحيح.";
-document.getElementById("back-btn").style.display="inline-block";
-return;
-}
-var leaves=await api("leaves?id=eq."+id+"&select=*,employees(name,email)");
-var leave=leaves&&leaves[0];
-if(!leave){
-document.getElementById("icon").textContent="❌";
-document.getElementById("title").textContent="الطلب غير موجود";
-document.getElementById("msg").textContent="لم يتم العثور على هذا الطلب أو تم حذفه مسبقاً.";
-document.getElementById("back-btn").style.display="inline-block";
-return;
-}
-if(leave.status!=="pending"){
-document.getElementById("icon").textContent="ℹ️";
-document.getElementById("title").textContent="تمت المعالجة مسبقاً";
-document.getElementById("msg").textContent="هذا الطلب تم البت فيه مسبقاً.";
-document.getElementById("back-btn").style.display="inline-block";
-return;
-}
-var name=leave.employees?leave.employees.name:empName;
-var email=leave.employees?leave.employees.email:empEmail;
-if(action==="approve"){
-await api("leaves?id=eq."+id,"PATCH",{status:"approved"});
-if(email){
-await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{
-to_email:email,
-subject:"تمت الموافقة على إجازتك",
-employee_name:name,
-start_date:leave.start_date,
-end_date:leave.end_date,
-notes:"تمت الموافقة على طلب إجازتك من قِبَل الإدارة. نتمنى لك إجازة سعيدة!",
-approve_url:"",
-reject_url:""
-});
-}
-document.getElementById("icon").textContent="✅";
-document.getElementById("title").textContent="تمت الموافقة";
-document.getElementById("msg").textContent="تمت الموافقة على إجازة "+name+" من "+fmt(leave.start_date)+" إلى "+fmt(leave.end_date)+". وتم إرسال إشعار للموظف.";
-}else if(action==="reject"){
-await api("leaves?id=eq."+id,"DELETE");
-if(email){
-await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{
-to_email:email,
-subject:"اعتذار بشأن طلب إجازتك",
-employee_name:name,
-start_date:leave.start_date,
-end_date:leave.end_date,
-notes:"نأسف لإبلاغك بأنه لم تتم الموافقة على طلب إجازتك. للاستفسار يرجى التواصل مع الإدارة.",
-approve_url:"",
-reject_url:""
-});
-}
-document.getElementById("icon").textContent="❌";
-document.getElementById("title").textContent="تم الرفض";
-document.getElementById("msg").textContent="تم رفض طلب إجازة "+name+" وإشعاره بالقرار.";
-}
-document.getElementById("back-btn").style.display="inline-block";
-}
-run();
+async function api(path,method,body){method=method||"GET";var opts={method:method,headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY,"Content-Type":"application/json","Prefer":method==="POST"?"return=representation":""}};if(body)opts.body=JSON.stringify(body);var res=await fetch(SUPABASE_URL+"/rest/v1/"+path,opts);return res.ok?res.json():[];}
+function fmt(d){return new Date(d).toLocaleDateString("ar-SA",{year:"numeric",month:"long",day:"numeric"});}
+async function processAction(){var params=new URLSearchParams(window.location.search);var action=params.get("action");var id=params.get("id");if(!action||!id){document.getElementById("icon").textContent="❌";document.getElementById("title").textContent="رابط غير صالح";document.getElementById("msg").textContent="لم يتم العثور على معلومات الطلب.";document.getElementById("backBtn").style.display="inline-block";return;}var leaves=await api("leaves?id=eq."+id+"&select=*,employees(name,email)");if(!leaves||leaves.length===0){document.getElementById("icon").textContent="⚠️";document.getElementById("title").textContent="الطلب غير موجود";document.getElementById("msg").textContent="ربما تمت معالجة هذا الطلب مسبقاً.";document.getElementById("backBtn").style.display="inline-block";return;}var leave=leaves[0];if(leave.status!=="pending"){document.getElementById("icon").textContent="ℹ️";document.getElementById("title").textContent="تمت المعالجة مسبقاً";document.getElementById("msg").textContent="هذا الطلب تمت معالجته بالفعل.";document.getElementById("backBtn").style.display="inline-block";return;}var empName=leave.employees?leave.employees.name:"";var empEmail=leave.employees?leave.employees.email:"";if(action==="approve"){await api("leaves?id=eq."+id,"PATCH",{status:"approved"});if(empEmail){await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{to_email:empEmail,subject:"تمت الموافقة على طلب إجازتك",employee_name:empName,start_date:leave.start_date,end_date:leave.end_date,notes:"تمت الموافقة على طلب إجازتك من "+fmt(leave.start_date)+" إلى "+fmt(leave.end_date)+".",approve_url:"",reject_url:""});}document.getElementById("icon").textContent="✅";document.getElementById("title").textContent="تمت الموافقة";document.getElementById("msg").textContent="تمت الموافقة على إجازة "+empName+(empEmail?" وتم إرسال إشعار على بريده الإلكتروني.":".");}else if(action==="reject"){await api("leaves?id=eq."+id,"DELETE");if(empEmail){await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{to_email:empEmail,subject:"اعتذار — لم تتم الموافقة على طلب إجازتك",employee_name:empName,start_date:leave.start_date,end_date:leave.end_date,notes:"نأسف لإبلاغك بأنه لم تتم الموافقة على طلب إجازتك من "+fmt(leave.start_date)+" إلى "+fmt(leave.end_date)+".",approve_url:"",reject_url:""});}document.getElementById("icon").textContent="❌";document.getElementById("title").textContent="تم الرفض";document.getElementById("msg").textContent="تم رفض طلب إجازة "+empName+(empEmail?" وتم إرسال إشعار على بريده الإلكتروني.":".");}document.getElementById("backBtn").style.display="inline-block";}
+processAction();
 </script>
 </body>
 </html>
