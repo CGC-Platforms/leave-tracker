@@ -10,17 +10,17 @@ body { font-family: Segoe UI, Tahoma, sans-serif; background: #f0f4f8; color: #2
 .navbar { background: #1a202c; color: white; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 52px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 100; }
 .navbar-brand { font-size: 16px; font-weight: 700; color: white; text-decoration: none; }
 .navbar-links { display: flex; gap: 4px; }
-.navbar-links a { color: rgba(255,255,255,0.75); text-decoration: none; padding: 6px 14px; border-radius: 6px; font-size: 14px; font-weight: 500; }
+.navbar-links a { color: rgba(255,255,255,0.9); text-decoration: none; padding: 6px 14px; border-radius: 6px; font-size: 14px; font-weight: 500; }
 .navbar-links a.active { background: #38a169; color: white; }
 .header { background: linear-gradient(135deg, #38a169 0%, #2f855a 100%); color: white; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
 .header h1 { font-size: 26px; font-weight: 700; }
-.header p { opacity: 0.85; margin-top: 4px; font-size: 13px; }
+.header p { opacity: 0.95; margin-top: 4px; font-size: 13px; }
 .header-badge { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
 .container { max-width: 1100px; margin: 28px auto; padding: 0 16px; }
 .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
 .stat-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-align: center; }
-.stat-card .num { font-size: 36px; font-weight: 700; color: #4a5568; }
-.stat-card .label { color: #718096; margin-top: 4px; font-size: 14px; }
+.stat-card .num { font-size: 36px; font-weight: 700; color: #2d3748; }
+.stat-card .label { color: #4a5568; margin-top: 4px; font-size: 14px; }
 .card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 24px; }
 .card h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
 .today-section { background: linear-gradient(135deg, #e6fffa 0%, #ebf8ff 100%); border: 1px solid #81e6d9; }
@@ -34,119 +34,4 @@ tr:hover td { background: #f7fafc; }
 .badge-upcoming { background: #bee3f8; color: #2c5282; }
 .badge-ended { background: #e2e8f0; color: #718096; }
 .loading { text-align: center; color: #718096; padding: 24px; }
-.empty { text-align: center; color: #a0aec0; padding: 24px; font-size: 14px; }
-.request-card { border: 2px solid #c6f6d5; }
-.request-card h2 { color: #276749; }
-.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
-.form-group { display: flex; flex-direction: column; gap: 6px; }
-.form-group.full { grid-column: 1 / -1; }
-.form-group label { font-size: 13px; font-weight: 600; color: #4a5568; }
-.form-group select, .form-group input, .form-group textarea { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 14px; font-family: inherit; background: #f7fafc; color: #2d3748; direction: rtl; }
-.form-group select:focus, .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #38a169; background: white; }
-.form-group textarea { resize: vertical; min-height: 80px; }
-.conflict-warning { background: #fff5f5; border: 1.5px solid #fc8181; color: #c53030; border-radius: 8px; padding: 12px 16px; font-size: 14px; margin-bottom: 16px; display: none; }
-.conflict-warning.show { display: block; }
-.success-msg { background: #f0fff4; border: 1.5px solid #68d391; color: #276749; border-radius: 8px; padding: 14px 16px; font-size: 14px; margin-bottom: 16px; display: none; text-align: center; font-weight: 600; }
-.success-msg.show { display: block; }
-.submit-btn { background: #38a169; color: white; border: none; border-radius: 8px; padding: 12px 28px; font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer; width: 100%; }
-.submit-btn:hover:not(:disabled) { background: #2f855a; }
-.submit-btn:disabled { background: #a0aec0; cursor: not-allowed; }
-.days-preview { font-size: 12px; color: #718096; margin-top: 4px; }
-.days-until { font-size: 12px; color: #3182ce; font-weight: 600; background: #ebf8ff; padding: 2px 8px; border-radius: 10px; display: inline-block; margin-top: 4px; }
-.next-leave-box { background: #ebf8ff; border: 1px solid #bee3f8; border-radius: 10px; padding: 14px 18px; color: #2c5282; font-size: 14px; }
-.next-leave-box strong { font-size: 15px; }
-</style>
-</head>
-<body>
-<nav class="navbar">
-<a href="index.html" class="navbar-brand">نظام الإجازات</a>
-<div class="navbar-links">
-<a href="employees.html" class="active">صفحة الموظفين</a>
-</div>
-</nav>
-<div class="header">
-<div><h1>نظام تتبع الإجازات</h1><p>عرض الإجازات وتقديم الطلبات</p></div>
-<span class="header-badge">الموظفين</span>
-</div>
-<div class="container">
-<div class="stats">
-<div class="stat-card"><div class="num" id="stat-total">-</div><div class="label">إجمالي الإجازات</div></div>
-<div class="stat-card"><div class="num" id="stat-active" style="color:#38a169">-</div><div class="label">في إجازة الآن</div></div>
-<div class="stat-card"><div class="num" id="stat-upcoming" style="color:#2b6cb0">-</div><div class="label">إجازات قادمة</div></div>
-<div class="stat-card"><div class="num" id="stat-employees" style="color:#6b46c1">-</div><div class="label">عدد الموظفين</div></div>
-</div>
-<div class="card today-section">
-<h2>الحالة اليوم</h2>
-<div id="today-info" class="loading">جارٍ التحميل...</div>
-</div>
-<div class="card">
-<h2>جميع الإجازات الموافق عليها</h2>
-<div id="leaves-table" class="loading">جارٍ التحميل...</div>
-</div>
-<div class="card request-card">
-<h2>تقديم طلب إجازة</h2>
-<div class="success-msg" id="success-msg">تم إرسال طلبك بنجاح! سيتم مراجعته من قِبَل الإدارة.</div>
-<div class="conflict-warning" id="conflict-warning"></div>
-<form id="request-form" onsubmit="submitRequest(event)">
-<div class="form-grid">
-<div class="form-group"><label>الاسم</label><select id="req-name" required onchange="onEmployeeChange()"><option value="">-- اختر اسمك --</option></select></div>
-<div class="form-group"><label>تاريخ البداية</label><input type="date" id="req-start" required onchange="onStartChange()" /></div>
-<div class="form-group"><label>تاريخ النهاية</label><input type="date" id="req-end" required onchange="onEndChange()" /><span class="days-preview" id="days-preview"></span></div>
-<div class="form-group full"><label>ملاحظات إضافية (اختياري)</label><textarea id="req-notes" placeholder="أي تفاصيل إضافية..."></textarea></div>
-</div>
-<button type="submit" class="submit-btn" id="submit-btn">إرسال الطلب</button>
-</form>
-</div>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script>
-const SUPABASE_URL="https://wtbypuieilnicomwnwax.supabase.co";
-const SUPABASE_KEY="sb_publishable_T88-VXy8YDYL91hk9IgWGg_l0B6Ax4w";
-const EMAILJS_SERVICE="service_9vkcpeo";
-const EMAILJS_TEMPLATE="template_xykx1lg";
-const EMAILJS_PUBLIC_KEY="sltwrjL9WXGInu62s";
-const ADMIN_EMAIL="3zzawe1@gmail.com";
-const BASE_URL="https://3zzawe1-boop.github.io/leave-tracker";
-emailjs.init(EMAILJS_PUBLIC_KEY);
-let allApprovedLeaves=[],allEmployees=[];
-async function api(path,method,body){
-method=method||"GET";
-var opts={method:method,headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY,"Content-Type":"application/json","Prefer":method==="POST"?"return=representation":""}};
-if(body)opts.body=JSON.stringify(body);
-var res=await fetch(SUPABASE_URL+"/rest/v1/"+path,opts);
-return res.ok?res.json():[];
-}
-function getStatus(s,e){var t=new Date();t.setHours(0,0,0,0);var sd=new Date(s),ed=new Date(e);if(t>=sd&&t<=ed)return"active";if(t<sd)return"upcoming";return"ended";}
-function statusPriority(st){if(st==="active")return 0;if(st==="upcoming")return 1;return 2;}
-function sortLeaves(arr){return arr.slice().sort(function(a,b){var pa=statusPriority(getStatus(a.start_date,a.end_date));var pb=statusPriority(getStatus(b.start_date,b.end_date));if(pa!==pb)return pa-pb;return new Date(a.start_date)-new Date(b.start_date);});}
-function statusBadge(st){if(st==="active")return'<span class="badge badge-active">في إجازة</span>';if(st==="upcoming")return'<span class="badge badge-upcoming">قادمة</span>';return'<span class="badge badge-ended">انتهت</span>';}
-function calcDays(s,e){return Math.round((new Date(e)-new Date(s))/86400000)+1;}
-function fmt(d){return new Date(d).toLocaleDateString("ar-SA",{year:"numeric",month:"short",day:"numeric"});}
-function daysUntil(s){var t=new Date();t.setHours(0,0,0,0);var sd=new Date(s);var diff=Math.round((sd-t)/86400000);if(diff===0)return"اليوم";if(diff===1)return"غداً";if(diff>1)return"بعد "+diff+" يوم";return null;}
-async function loadAll(){
-var results=await Promise.all([
-api("leaves?status=eq.approved&select=*,employees(name)&order=start_date.asc"),
-api("employees?select=*&order=name.asc")
-]);
-allApprovedLeaves=results[0]||[];
-allEmployees=results[1]||[];
-renderStats();
-renderToday();
-renderTable();
-populateEmployeeSelect();
-}
-function renderStats(){var total=allApprovedLeaves.length;var active=allApprovedLeaves.filter(l=>getStatus(l.start_date,l.end_date)==="active").length;var upcoming=allApprovedLeaves.filter(l=>getStatus(l.start_date,l.end_date)==="upcoming").length;document.getElementById("stat-total").textContent=total;document.getElementById("stat-active").textContent=active;document.getElementById("stat-upcoming").textContent=upcoming;document.getElementById("stat-employees").textContent=allEmployees.length;}
-function renderToday(){var el=document.getElementById("today-info");var active=allApprovedLeaves.filter(l=>getStatus(l.start_date,l.end_date)==="active");if(active.length>0){var l=active[0];var name=l.employees?l.employees.name:(l.employee_name||"");el.innerHTML='<div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;"><span style="font-size:28px;">🟢</span><div><div style="font-size:17px;font-weight:700;color:#276749;">'+name+' في إجازة الآن</div><div style="color:#4a5568;margin-top:4px;font-size:14px;">'+fmt(l.start_date)+' — '+fmt(l.end_date)+'</div></div></div>';}else{var upcoming=allApprovedLeaves.filter(l=>getStatus(l.start_date,l.end_date)==="upcoming").sort(function(a,b){return new Date(a.start_date)-new Date(b.start_date);});if(upcoming.length>0){var next=upcoming[0];var nextName=next.employees?next.employees.name:(next.employee_name||"");var until=daysUntil(next.start_date);el.innerHTML='<div style="color:#4a5568;margin-bottom:10px;font-size:14px;">لا يوجد موظف في إجازة الآن</div><div class="next-leave-box">📅 أقرب إجازة: <strong>'+nextName+'</strong> — <span style="color:#276749;font-weight:700;">'+until+'</span> ('+fmt(next.start_date)+')</div>';}else{el.innerHTML='<div class="empty">✅ جميع الموظفين في العمل اليوم</div>';}}
-}
-function renderTable(){var el=document.getElementById("leaves-table");var sorted=sortLeaves(allApprovedLeaves);if(sorted.length===0){el.innerHTML='<div class="empty">لا توجد إجازات موافق عليها</div>';return;}var html='<table><thead><tr><th>الموظف</th><th>من</th><th>إلى</th><th>الأيام</th><th>الحالة</th></tr></thead><tbody>';sorted.forEach(function(l){var name=l.employees?l.employees.name:(l.employee_name||"");var st=getStatus(l.start_date,l.end_date);var daysTag="";if(st==="upcoming"){var u=daysUntil(l.start_date);if(u)daysTag='<br><span class="days-until">'+u+'</span>';}html+='<tr><td>'+name+'</td><td>'+fmt(l.start_date)+daysTag+'</td><td>'+fmt(l.end_date)+'</td><td>'+calcDays(l.start_date,l.end_date)+'</td><td>'+statusBadge(st)+'</td></tr>';});html+='</tbody></table>';el.innerHTML=html;}
-function populateEmployeeSelect(){var sel=document.getElementById("req-name");sel.innerHTML='<option value="">-- اختر اسمك --</option>';allEmployees.forEach(function(e){sel.innerHTML+='<option value="'+e.id+'">'+e.name+'</option>';});}
-function onEmployeeChange(){checkConflict();}
-function onStartChange(){var s=document.getElementById("req-start").value;if(s){var min=new Date(s);min.setDate(min.getDate()+1);document.getElementById("req-end").min=min.toISOString().split("T")[0];}checkConflict();updateDaysPreview();}
-function onEndChange(){checkConflict();updateDaysPreview();}
-function updateDaysPreview(){var s=document.getElementById("req-start").value;var e=document.getElementById("req-end").value;var p=document.getElementById("days-preview");if(s&&e&&new Date(e)>new Date(s)){p.textContent="مدة الإجازة: "+calcDays(s,e)+" يوم";}else{p.textContent="";}}
-function checkConflict(){var s=document.getElementById("req-start").value;var e=document.getElementById("req-end").value;var warn=document.getElementById("conflict-warning");var btn=document.getElementById("submit-btn");if(!s||!e){warn.classList.remove("show");btn.disabled=false;return;}var sd=new Date(s),ed=new Date(e);var conflict=allApprovedLeaves.filter(l=>getStatus(l.start_date,l.end_date)!=="ended").find(function(l){var ls=new Date(l.start_date),le=new Date(l.end_date);return sd<=le&&ed>=ls;});if(conflict){var cname=conflict.employees?conflict.employees.name:(conflict.employee_name||"");warn.innerHTML="⚠️ تعارض مع إجازة "+cname+" ("+fmt(conflict.start_date)+" — "+fmt(conflict.end_date)+"). لا يمكن أن يكون أكثر من موظف واحد في إجازة في نفس الوقت.";warn.classList.add("show");btn.disabled=true;}else{warn.classList.remove("show");btn.disabled=false;}}
-async function submitRequest(ev){ev.preventDefault();var empId=document.getElementById("req-name").value;var start=document.getElementById("req-start").value;var end=document.getElementById("req-end").value;var notes=document.getElementById("req-notes").value;if(!empId||!start||!end)return;var btn=document.getElementById("submit-btn");btn.disabled=true;btn.textContent="جارٍ الإرسال...";var emp=allEmployees.find(function(e){return String(e.id)===String(empId);});var empName=emp?emp.name:"";var inserted=await api("leaves","POST",{employee_id:parseInt(empId),start_date:start,end_date:end,notes:notes,status:"pending"});if(inserted&&inserted.length>0){var newId=inserted[0].id;var approveUrl=BASE_URL+"/action.html?action=approve&id="+newId;var rejectUrl=BASE_URL+"/action.html?action=reject&id="+newId;await emailjs.send(EMAILJS_SERVICE,EMAILJS_TEMPLATE,{to_email:ADMIN_EMAIL,subject:"طلب إجازة جديد - "+empName,employee_name:empName,start_date:start,end_date:end,notes:notes||"لا يوجد",approve_url:approveUrl,reject_url:rejectUrl});document.getElementById("success-msg").classList.add("show");document.getElementById("request-form").reset();document.getElementById("days-preview").textContent="";btn.textContent="إرسال الطلب";}else{alert("حدث خطأ أثناء الإرسال، يرجى المحاولة مرة أخرى.");btn.disabled=false;btn.textContent="إرسال الطلب";}}
-loadAll();
-</script>
-</body>
-</html>
+
