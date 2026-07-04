@@ -17,18 +17,19 @@ body { font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif; background: #f3f5
 .navbar-links a:hover { background: rgba(255,255,255,0.08); }
 .navbar-links a.active { background: #3d5a80; color: white; }
 .header { background: linear-gradient(135deg, #3d5a80 0%, #2b415c 100%); color: white; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-.header h1 { font-size: 22px; font-weight: 700; }
+.header h1 { font-size: 22px; font-weight: 600; }
 .header p { opacity: 0.85; margin-top: 4px; font-size: 13px; }
 .header-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
-.container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
-.stat-card { background: white; border: 1px solid #e7ebf0; border-radius: 10px; padding: 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); text-align: center; }
+.container { max-width: 1100px; margin: 20px auto; padding: 0 16px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; align-items: stretch; }
+.stat-card { background: white; border: 1px solid #edf0f4; border-radius: 10px; padding: 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); text-align: center; display: flex; flex-direction: column; justify-content: center; min-height: 92px; }
 .stat-card .num { font-size: 32px; font-weight: 700; color: #3d5a80; }
 .stat-card .label { color: #718096; margin-top: 4px; font-size: 13px; }
-.card { background: white; border: 1px solid #e7ebf0; border-radius: 10px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 18px; }
-.card h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #2d3748; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; }
+.card { background: white; border: 1px solid #e7ebf0; border-radius: 10px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 20px; }
+.card h2 { font-size: 16px; font-weight: 600; margin-bottom: 12px; color: #2d3748; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
 .today-section { background: #f4fbfa; border: 1px solid #cfeee7; padding: 16px 20px; }
 .today-section h2 { margin-bottom: 8px; padding-bottom: 6px; }
+.request-card h2 { margin-bottom: 10px; padding-bottom: 8px; }
 table { width: 100%; border-collapse: collapse; }
 th { background: #f7fafc; padding: 10px 14px; text-align: right; font-size: 12px; font-weight: 700; color: #4a5568; border-bottom: 1px solid #e2e8f0; vertical-align: middle; letter-spacing: .2px; }
 td { padding: 10px 14px; border-bottom: 1px solid #eef1f5; font-size: 13.5px; vertical-align: middle; text-align: right; }
@@ -44,10 +45,12 @@ tr:hover td { background: #f7fafc; }
 .form-row { display: flex; gap: 12px; align-items: flex-end; flex-wrap: wrap; margin-bottom: 8px; }
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-group label { font-size: 13px; font-weight: 600; color: #4a5568; }
-.form-group input, .form-group select { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 9px 12px; font-size: 14px; font-family: inherit; background: #f7fafc; color: #2d3748; direction: rtl; width: 220px; height: 40px; }
+.form-group input, .form-group select { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 14px; font-size: 14px; font-family: inherit; background: #f7fafc; color: #2d3748; direction: rtl; width: 220px; height: 40px; }
 .form-group input:focus, .form-group select:focus { outline: none; border-color: #3d5a80; background: white; }
 .form-group select { cursor: pointer; }
-.btn-green { background: #3d5a80; color: white; padding: 9px 20px; border-radius: 8px; font-size: 14px; border: none; cursor: pointer; font-family: inherit; font-weight: 600; transition: background .15s ease; height: 40px; }
+.form-group select:invalid { color: #a0aec0; }
+.form-group select option { color: #2d3748; }
+.btn-green { background: #3d5a80; color: white; padding: 10px 24px; border-radius: 8px; font-size: 14px; border: none; cursor: pointer; font-family: inherit; font-weight: 600; transition: background .15s ease; height: 40px; min-width: 130px; }
 .btn-green:hover { background: #2b415c; }
 .table-scroll { overflow-x: auto; }
 @media (max-width: 640px) {
@@ -58,14 +61,14 @@ tr:hover td { background: #f7fafc; }
 .header h1 { font-size: 19px; }
 .container { margin: 16px auto; padding: 0 12px; }
 .stats { grid-template-columns: 1fr 1fr; gap: 10px; }
-.stat-card { padding: 14px; }
+.stat-card { padding: 14px; min-height: 80px; }
 .stat-card .num { font-size: 26px; }
 .card { padding: 14px; }
 .card h2 { font-size: 15px; }
 th, td { padding: 8px 10px; font-size: 12.5px; }
-.form-row { flex-direction: column; align-items: stretch; }
+.form-row { flex-direction: column; align-items: stretch; gap: 14px; }
 .form-group input, .form-group select { width: 100%; }
-.btn-green { width: 100%; }
+.btn-green { width: 100%; min-width: 0; }
 }
 </style>
 </head>
@@ -97,10 +100,10 @@ th, td { padding: 8px 10px; font-size: 12.5px; }
 <h2>جميع الإجازات</h2>
 <div id="leaves-table" class="loading table-scroll">جارٍ التحميل...</div>
 </div>
-<div class="card">
+<div class="card request-card">
 <h2>تقديم طلب إجازة</h2>
 <div class="form-row">
-<div class="form-group"><label>اسم الموظف</label><select id="req-name"><option value="">اختر اسمك</option></select></div>
+<div class="form-group"><label>اسم الموظف</label><select id="req-name" required><option value="">اختر اسمك</option></select></div>
 <div class="form-group"><label>تاريخ البداية</label><input type="date" id="req-start" /></div>
 <div class="form-group"><label>تاريخ النهاية</label><input type="date" id="req-end" /></div>
 <div class="form-group"><label>&nbsp;</label><button class="btn-green" onclick="submitRequest()">إرسال الطلب</button></div>
