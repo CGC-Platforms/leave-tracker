@@ -4,31 +4,36 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>نظام تتبع الإجازات - الإدارة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 <style>
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: Segoe UI, Tahoma, sans-serif; background: #f0f4f8; color: #2d3748; direction: rtl; }
-.navbar { background: #1a202c; color: white; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 52px; box-shadow: 0 2px 8px rgba(0,0,0,0.2); position: sticky; top: 0; z-index: 100; }
+body { font-family: 'Tajawal', 'Segoe UI', Tahoma, sans-serif; background: #f3f5f8; color: #2d3748; direction: rtl; line-height: 1.6; }
+.navbar { background: #1e2530; color: white; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; height: 54px; box-shadow: 0 1px 4px rgba(0,0,0,0.15); position: sticky; top: 0; z-index: 100; }
 .navbar-brand { font-size: 16px; font-weight: 700; color: white; text-decoration: none; }
 .navbar-links { display: flex; gap: 4px; }
-.navbar-links a { color: rgba(255,255,255,075); text-decoration: none; padding: 6px 14px; border-radius: 6px; font-size: 14px; font-weight: 500; }
-.navbar-links a.active { background: #667eea; color: white; }
-.header { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-.header h1 { font-size: 26px; font-weight: 700; }
+.navbar-links a { color: rgba(255,255,255,0.85); text-decoration: none; padding: 7px 14px; border-radius: 6px; font-size: 14px; font-weight: 500; transition: background .15s ease; }
+.navbar-links a:hover { background: rgba(255,255,255,0.08); }
+.navbar-links a.active { background: #3d5a80; color: white; }
+.header { background: linear-gradient(135deg, #3d5a80 0%, #2b415c 100%); color: white; padding: 20px 32px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+.header h1 { font-size: 22px; font-weight: 700; }
 .header p { opacity: 0.85; margin-top: 4px; font-size: 13px; }
-.header-badge { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
-.refresh-btn { background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; font-weight: 600; }
-.container { max-width: 1100px; margin: 28px auto; padding: 0 16px; }
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 28px; }
-.stat-card { background: white; border-radius: 12px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); text-align: center; }
-.stat-card .num { font-size: 36px; font-weight: 700; color: #667eea; }
-.stat-card .label { color: #718096; margin-top: 4px; font-size: 14px; }
-.card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 24px; }
-.card h2 { font-size: 18px; font-weight: 600; margin-bottom: 16px; color: #2d3748; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
-.pending-card { border: 2px solid #fbd38d; }
-.pending-card h2 { color: #c05621; }
+.header-badge { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; }
+.refresh-btn { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 8px 16px; border-radius: 8px; cursor: pointer; font-size: 13px; font-family: inherit; font-weight: 600; transition: background .15s ease; }
+.refresh-btn:hover { background: rgba(255,255,255,0.25); }
+.container { max-width: 1100px; margin: 24px auto; padding: 0 16px; }
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; margin-bottom: 20px; }
+.stat-card { background: white; border: 1px solid #e7ebf0; border-radius: 10px; padding: 18px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); text-align: center; }
+.stat-card .num { font-size: 32px; font-weight: 700; color: #3d5a80; }
+.stat-card .label { color: #718096; margin-top: 4px; font-size: 13px; }
+.card { background: white; border: 1px solid #e7ebf0; border-radius: 10px; padding: 20px; box-shadow: 0 1px 2px rgba(0,0,0,0.04); margin-bottom: 18px; }
+.card h2 { font-size: 16px; font-weight: 700; margin-bottom: 14px; color: #2d3748; border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; }
+.pending-card { border: 1px solid #f6c453; }
+.pending-card h2 { color: #b7791f; }
 table { width: 100%; border-collapse: collapse; }
-th { background: #f7fafc; padding: 12px 16px; text-align: right; font-size: 13px; font-weight: 600; color: #4a5568; border-bottom: 2px solid #e2e8f0; }
-td { padding: 12px 16px; border-bottom: 1px solid #f0f4f8; font-size: 14px; vertical-align: middle; }
+th { background: #f7fafc; padding: 10px 14px; text-align: right; font-size: 12px; font-weight: 700; color: #4a5568; border-bottom: 1px solid #e2e8f0; letter-spacing: .2px; }
+td { padding: 10px 14px; border-bottom: 1px solid #eef1f5; font-size: 13.5px; vertical-align: middle; }
 tr:last-child td { border-bottom: none; }
 tr:hover td { background: #f7fafc; }
 .badge { display: inline-block; padding: 4px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
@@ -39,18 +44,36 @@ tr:hover td { background: #f7fafc; }
 .btn-approve { background: #c6f6d5; color: #276749; }
 .btn-reject { background: #fed7d7; color: #c53030; }
 .btn-delete { background: #fed7d7; color: #c53030; }
-.btn-green { background: #38a169; color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; border: none; cursor: pointer; font-family: inherit; font-weight: 600; }
-.loading { text-align: center; color: #718096; padding: 24px; }
-.empty { text-align: center; color: #a0aec0; padding: 24px; font-size: 14px; }
+.btn-green { background: #3d5a80; color: white; padding: 10px 20px; border-radius: 8px; font-size: 14px; border: none; cursor: pointer; font-family: inherit; font-weight: 600; transition: background .15s ease; }
+.btn-green:hover { background: #2b415c; }
+.loading { text-align: center; color: #718096; padding: 20px; }
+.empty { text-align: center; color: #a0aec0; padding: 20px; font-size: 14px; }
 .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
 .form-group { display: flex; flex-direction: column; gap: 6px; }
 .form-group label { font-size: 13px; font-weight: 600; color: #4a5568; }
 .form-group select, .form-group input { border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 10px 12px; font-size: 14px; font-family: inherit; background: #f7fafc; color: #2d3748; direction: rtl; }
-.form-group select:focus, .form-group input:focus { outline: none; border-color: #667eea; background: white; }
+.form-group select:focus, .form-group input:focus { outline: none; border-color: #3d5a80; background: white; }
 .days-preview { font-size: 12px; color: #718096; margin-top: 4px; }
 .emp-row { display: flex; gap: 8px; margin-bottom: 8px; align-items: center; }
 .emp-row input { flex: 1; border: 1.5px solid #e2e8f0; border-radius: 8px; padding: 8px 12px; font-size: 14px; font-family: inherit; }
 .days-until { font-size: 12px; color: #3182ce; font-weight: 600; background: #ebf8ff; padding: 2px 8px; border-radius: 10px; display: inline-block; margin-right: 6px; }
+.table-scroll { overflow-x: auto; }
+@media (max-width: 640px) {
+  .navbar { padding: 8px 12px; flex-wrap: wrap; height: auto; gap: 6px; }
+  .navbar-links { gap: 2px; }
+  .navbar-links a { padding: 6px 10px; font-size: 13px; }
+  .header { padding: 16px; }
+  .header h1 { font-size: 19px; }
+  .container { margin: 16px auto; padding: 0 12px; }
+  .stats { grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-card { padding: 14px; }
+  .stat-card .num { font-size: 26px; }
+  .card { padding: 14px; }
+  .card h2 { font-size: 15px; }
+  th, td { padding: 8px 10px; font-size: 12.5px; }
+  .form-grid { grid-template-columns: 1fr; }
+  .emp-row { flex-direction: column; align-items: stretch; }
+}
 </style>
 </head>
 <body>
@@ -71,13 +94,13 @@ tr:hover td { background: #f7fafc; }
 <div class="container">
 <div class="stats">
 <div class="stat-card"><div class="num" id="stat-total">-</div><div class="label">إجمالي الإجازات</div></div>
-<div class="stat-card"><div class="num" id="stat-active" style="color:#38a169">-</div><div class="label">في إجازة الآن</div></div>
-<div class="stat-card"><div class="num" id="stat-pending" style="color:#c05621">-</div><div class="label">طلبات معلّقة</div></div>
-<div class="stat-card"><div class="num" id="stat-employees" style="color:#805ad5">-</div><div class="label">عدد الموظفين</div></div>
+<div class="stat-card"><div class="num" id="stat-active" style="color:#2f9e6e">-</div><div class="label">في إجازة الآن</div></div>
+<div class="stat-card"><div class="num" id="stat-pending" style="color:#b7791f">-</div><div class="label">طلبات معلّقة</div></div>
+<div class="stat-card"><div class="num" id="stat-employees" style="color:#6b5b95">-</div><div class="label">عدد الموظفين</div></div>
 </div>
 <div class="card pending-card" id="pending-section" style="display:none">
 <h2>طلبات الإجازة المعلّقة</h2>
-<div id="pending-table" class="loading">جارٍ التحميل...</div>
+<div id="pending-table" class="loading table-scroll">جارٍ التحميل...</div>
 </div>
 <div class="card">
 <h2>إضافة إجازة مباشرة</h2>
@@ -90,7 +113,7 @@ tr:hover td { background: #f7fafc; }
 </div>
 <div class="card">
 <h2>جميع الإجازات الموافق عليها</h2>
-<div id="leaves-table" class="loading">جارٍ التحميل...</div>
+<div id="leaves-table" class="loading table-scroll">جارٍ التحميل...</div>
 </div>
 <div class="card">
 <h2>إدارة الموظفين</h2>
@@ -99,7 +122,7 @@ tr:hover td { background: #f7fafc; }
 <input type="email" id="new-emp-email" placeholder="البريد الإلكتروني" />
 <button class="btn-green" onclick="addEmployee()">إضافة</button>
 </div>
-<div id="employees-list" class="loading">جارٍ التحميل...</div>
+<div id="employees-list" class="loading table-scroll">جارٍ التحميل...</div>
 </div>
 </div>
 <script>
@@ -119,7 +142,7 @@ function renderStats(pendingCount){document.getElementById("stat-total").textCon
 function renderPending(pending){var sec=document.getElementById("pending-section");var el=document.getElementById("pending-table");if(pending.length===0){sec.style.display="none";return;}sec.style.display="block";var html='<table><thead><tr><th>الموظف</th><th>من</th><th>إلى</th><th>الأيام</th><th>الإجراء</th></tr></thead><tbody>';pending.forEach(function(l){var name=l.employees?l.employees.name:(l.employee_name||"");html+='<tr><td>'+name+'</td><td>'+fmt(l.start_date)+'</td><td>'+fmt(l.end_date)+'</td><td>'+calcDays(l.start_date,l.end_date)+'</td><td><button class="btn btn-approve" onclick="approveLeave('+l.id+')">قبول</button> <button class="btn btn-reject" onclick="rejectLeave('+l.id+')">رفض</button></td></tr>';});html+='</tbody></table>';el.innerHTML=html;}
 function renderTable(){var el=document.getElementById("leaves-table");var sorted=sortLeaves(allLeaves);if(sorted.length===0){el.innerHTML='<div class="empty">لا توجد إجازات موافق عليها</div>';return;}var html='<table><thead><tr><th>#</th><th>الموظف</th><th>تاريخ البداية</th><th>تاريخ النهاية</th><th>عدد الأيام</th><th>الحالة</th><th>حذف</th></tr></thead><tbody>';sorted.forEach(function(l,i){var name=l.employees?l.employees.name:(l.employee_name||"");var st=getStatus(l.start_date,l.end_date);var daysTag="";if(st==="upcoming"){var u=daysUntil(l.start_date);if(u)daysTag='<span class="days-until">'+u+'</span>';}html+='<tr><td>'+(i+1)+'</td><td>'+name+'</td><td>'+fmt(l.start_date)+daysTag+'</td><td>'+fmt(l.end_date)+'</td><td>'+calcDays(l.start_date,l.end_date)+' يوم</td><td>'+statusBadge(st)+'</td><td><button class="btn btn-delete" onclick="deleteLeave('+l.id+')">حذف</button></td></tr>';});html+='</tbody></table>';el.innerHTML=html;}
 function populateSelects(){var sel=document.getElementById("add-name");sel.innerHTML='<option value="">-- اختر موظفاً --</option>';allEmployees.forEach(function(e){sel.innerHTML+='<option value="'+e.id+'">'+e.name+'</option>';});}
-function renderEmployees(){var el=document.getElementById("employees-list");if(allEmployees.length===0){el.innerHTML='<div class="empty">لا يوجد موظفون</div>';return;}var html='<table><thead><tr><th>الاسم</th><th>البريد الإلكتروني</th><th>عدد الإجازات</th><th>إجمالي الأيام</th></tr></thead><tbody>';allEmployees.forEach(function(e){var empLeaves=allLeaves.filter(function(l){return l.employee_id===e.id;});var leaveCount=empLeaves.length;var totalDays=empLeaves.reduce(function(sum,l){return sum+calcDays(l.start_date,l.end_date);},0);html+='<tr><td>'+e.name+'</td><td>'+(e.email||'—')+'</td><td style="text-align:center;font-weight:600;color:#667eea;">'+leaveCount+'</td><td style="text-align:center;font-weight:600;color:#38a169;">'+totalDays+' يوم</td></tr>';});html+='</tbody></table>';el.innerHTML=html;}
+function renderEmployees(){var el=document.getElementById("employees-list");if(allEmployees.length===0){el.innerHTML='<div class="empty">لا يوجد موظفون</div>';return;}var html='<table><thead><tr><th>الاسم</th><th>البريد الإلكتروني</th><th>عدد الإجازات</th><th>إجمالي الأيام</th></tr></thead><tbody>';allEmployees.forEach(function(e){var empLeaves=allLeaves.filter(function(l){return l.employee_id===e.id;});var leaveCount=empLeaves.length;var totalDays=empLeaves.reduce(function(sum,l){return sum+calcDays(l.start_date,l.end_date);},0);html+='<tr><td>'+e.name+'</td><td>'+(e.email||'—')+'</td><td style="text-align:center;font-weight:600;color:#3d5a80;">'+leaveCount+'</td><td style="text-align:center;font-weight:600;color:#2f9e6e;">'+totalDays+' يوم</td></tr>';});html+='</tbody></table>';el.innerHTML=html;}
 function onAddStartChange(){var s=document.getElementById("add-start").value;if(s){var min=new Date(s);min.setDate(min.getDate()+1);document.getElementById("add-end").min=min.toISOString().split("T")[0];}updateAddDays();}
 function updateAddDays(){var s=document.getElementById("add-start").value;var e=document.getElementById("add-end").value;var p=document.getElementById("add-days-preview");if(s&&e&&new Date(e)>new Date(s)){p.textContent="مدة الإجازة: "+calcDays(s,e)+" يوم";}else{p.textContent="";}}
 async function addLeave(){var empId=document.getElementById("add-name").value;var start=document.getElementById("add-start").value;var end=document.getElementById("add-end").value;if(!empId||!start||!end){alert("يرجى تعبئة جميع الحقول");return;}var inserted=await api("leaves","POST",{employee_id:parseInt(empId),start_date:start,end_date:end,status:"approved"});if(inserted&&inserted.length>0){document.getElementById("add-name").value="";document.getElementById("add-start").value="";document.getElementById("add-end").value="";document.getElementById("add-days-preview").textContent="";loadAll();}else{alert("حدث خطأ أثناء الإضافة");}}
