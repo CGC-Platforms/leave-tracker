@@ -51,11 +51,9 @@ th.col-status, td.status-cell { min-width: 100px; }
 .filter-tab.active { background: #3d5a80; color: white; }
 
 .today-list { display: flex; flex-direction: column; gap: 10px; }
-.today-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; background: white; border: 1px solid #dcf1ec; border-radius: 8px; padding: 10px 14px; flex-wrap: wrap; }
-.today-row-main { display: flex; align-items: center; gap: 10px; }
-.today-row-name { font-weight: 700; font-size: 14.5px; color: #2d3748; }
-.today-row-meta { display: flex; align-items: center; gap: 14px; font-size: 13px; color: #4a5568; }
-.today-row-days { color: #718096; font-size: 12.5px; white-space: nowrap; }
+.today-row { background: white; border: 1px solid #dcf1ec; border-right: 3px solid #2f9e6e; border-radius: 8px; padding: 10px 14px; }
+.today-row-name { font-weight: 700; font-size: 14.5px; color: #2d3748; margin-bottom: 4px; }
+.today-row-info { font-size: 13px; color: #4a5568; }
 
 .mobile-cards { display: none; }
 .leave-card { background: white; border: 1px solid #e7ebf0; border-radius: 10px; padding: 12px 14px; margin-bottom: 10px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
@@ -99,8 +97,6 @@ th.col-status, td.status-cell { min-width: 100px; }
   .mobile-cards.mobile-only { display: block !important; }
   .filter-tabs { width: 100%; }
   .filter-tab { flex: 1; text-align: center; padding: 8px 6px; font-size: 13px; }
-  .today-row { flex-direction: column; align-items: flex-start; gap: 6px; padding: 10px 12px; }
-  .today-row-meta { width: 100%; justify-content: space-between; }
   .form-row { flex-direction: column; align-items: stretch; gap: 14px; }
   .form-group, .form-group.form-btn-group { flex: 0 0 auto; min-width: 0; width: 100%; }
   .form-group input, .form-group select { height: 50px; font-size: 15px; }
@@ -169,8 +165,21 @@ function statusBadge(st){if(st==="active")return'<span class="badge badge-active
 async function loadAll(){var results=await Promise.all([api("leaves?status=eq.approved&select=*,employees(name)&order=start_date.asc"),api("employees?select=*")]);allLeaves=results[0]||[];allEmployees=results[1]||[];renderStats();renderToday();renderLeaves();renderNameOptions();}
 function renderStats(){document.getElementById("stat-employees").textContent=allEmployees.length;document.getElementById("stat-active").textContent=allLeaves.filter(function(l){return getStatus(l.start_date,l.end_date)==="active";}).length;document.getElementById("stat-upcoming").textContent=allLeaves.filter(function(l){return getStatus(l.start_date,l.end_date)==="upcoming";}).length;document.getElementById("stat-total").textContent=allLeaves.length;document.getElementById("today-date").textContent=fmtToday(new Date());}
 
+function todayDaysLabel(n){if(n===1)return"يوم واحد";if(n===2)return"يومان";if(n>=3&&n<=10)return n+" أيام";return n+" يوم";}
+function formatTodayRange(start,end){
+var sd=parseISODate(start),ed=parseISODate(end);
+var sameYear=sd.getFullYear()===ed.getFullYear();
+var sameMonth=sameYear&&sd.getMonth()===ed.getMonth();
+if(sameMonth){
+return "من "+pad2(sd.getDate())+" إلى "+pad2(ed.getDate())+" "+GREGORIAN_MONTHS_AR[ed.getMonth()]+" "+ed.getFullYear();
+}
+if(sameYear){
+return "من "+pad2(sd.getDate())+" "+GREGORIAN_MONTHS_AR[sd.getMonth()]+" إلى "+pad2(ed.getDate())+" "+GREGORIAN_MONTHS_AR[ed.getMonth()]+" "+ed.getFullYear();
+}
+return "من "+pad2(sd.getDate())+" "+GREGORIAN_MONTHS_AR[sd.getMonth()]+" "+sd.getFullYear()+" إلى "+pad2(ed.getDate())+" "+GREGORIAN_MONTHS_AR[ed.getMonth()]+" "+ed.getFullYear();
+}
 function todayRowHTML(name,start,end,days){
-return '<div class="today-row"><div class="today-row-main"><span class="today-row-name">'+name+'</span><span class="badge badge-active">في إجازة</span></div><div class="today-row-meta"><span>'+fmt(start)+' - '+fmt(end)+'</span><span class="today-row-days">'+dayWord(days)+'</span></div></div>';
+return '<div class="today-row"><div class="today-row-name">'+name+'</div><div class="today-row-info">'+formatTodayRange(start,end)+' · '+todayDaysLabel(days)+'</div></div>';
 }
 
 function renderToday(){
