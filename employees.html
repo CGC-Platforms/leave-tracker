@@ -75,7 +75,7 @@ th.col-status, td.status-cell { min-width: 100px; }
 .form-group select option { color: #2d3748; }
 .btn-green { background: #3d5a80; color: white; padding: 0 26px; border-radius: 8px; font-size: 14.5px; border: none; cursor: pointer; font-family: inherit; font-weight: 700; transition: background .15s ease; height: 44px; width: 100%; min-width: 160px; }
 .btn-green:hover { background: #2b415c; }
-.table-scroll { overflow-x: auto; }
+.table-scroll { overflow-x: auto; } .date-sep { color: #a0aec0; font-weight: 400; }
 
 @media (max-width: 768px) {
   .navbar { padding: 8px 14px; flex-wrap: wrap; height: auto; gap: 6px; }
@@ -133,7 +133,7 @@ th.col-status, td.status-cell { min-width: 100px; }
 <h2>الإجازات</h2>
 <div id="leaves-table" class="loading">جارٍ التحميل...</div>
 </div>
-<div class="card request-card">
+<div class="card"><h2>رصيد الإجازات المتبقي</h2><div id="balance-table" class="loading">جارٍ التحميل...</div></div><div class="card request-card">
 <h2>تقديم طلب إجازة</h2>
 <div class="form-row">
 <div class="form-group"><label>اسم الموظف</label><select id="req-name" required><option value="">اختر اسمك</option></select></div>
@@ -157,12 +157,12 @@ function parseISODate(d){if(d instanceof Date)return d;var parts=String(d).split
 async function api(path,method,body){method=method||"GET";var opts={method:method,headers:{"apikey":SUPABASE_KEY,"Authorization":"Bearer "+SUPABASE_KEY,"Content-Type":"application/json","Prefer":method==="POST"?"return=representation":""}};if(body)opts.body=JSON.stringify(body);var res=await fetch(SUPABASE_URL+"/rest/v1/"+path,opts);return res.ok?res.json():[];}
 function getStatus(s,e){var t=new Date();t.setHours(0,0,0,0);var sd=new Date(s),ed=new Date(e);if(t>=sd&&t<=ed)return"active";if(t<sd)return"upcoming";return"ended";}
 function dayWord(n){if(n===1)return"يوم واحد";if(n===2)return"يومان";if(n>=3&&n<=10)return n+" أيام";return n+" يومًا";}
-function calcDays(s,e){return Math.round((new Date(e)-new Date(s))/86400000)+1;}
-function fmt(d){var date=parseISODate(d);return pad2(date.getDate())+" "+GREGORIAN_MONTHS_AR[date.getMonth()]+" "+date.getFullYear();}
+function calcDays(s,e){return Math.round((new Date(e)-new Date(s))/86400000)+1;}var ANNUAL_ALLOWANCE_DEFAULT=34;var ANNUAL_ALLOWANCE_OVERRIDES={"عبدالرحمن الطلاسي":48,"عبدالعزيز القضيبي":48};function getAllowance(name){return ANNUAL_ALLOWANCE_OVERRIDES.hasOwnProperty(name)?ANNUAL_ALLOWANCE_OVERRIDES[name]:ANNUAL_ALLOWANCE_DEFAULT;}function usedDaysThisYear(empId){var y=new Date().getFullYear();return allLeaves.filter(function(l){return l.employee_id===empId&&parseISODate(l.start_date).getFullYear()===y;}).reduce(function(sum,l){return sum+calcDays(l.start_date,l.end_date);},0);}
+function fmt(d){var date=parseISODate(d);return pad2(date.getDate())+" "+GREGORIAN_MONTHS_AR[date.getMonth()]+" "+date.getFullYear();}function fmtRangeArrow(s,e){var sd=parseISODate(s),ed=parseISODate(e);var sameYear=sd.getFullYear()===ed.getFullYear();var sameMonth=sameYear&&sd.getMonth()===ed.getMonth();var startPart;if(sameMonth){startPart=pad2(sd.getDate());}else if(sameYear){startPart=pad2(sd.getDate())+" "+GREGORIAN_MONTHS_AR[sd.getMonth()];}else{startPart=fmt(s);}return startPart+' <span class="date-sep">←</span> '+fmt(e);}
 function fmtToday(date){return WEEKDAYS_AR[date.getDay()]+"، "+pad2(date.getDate())+" "+GREGORIAN_MONTHS_AR[date.getMonth()]+" "+date.getFullYear();}
 function daysUntilLabel(s){var t=new Date();t.setHours(0,0,0,0);var sd=parseISODate(s);var diff=Math.round((sd-t)/86400000);if(diff<=0)return"اليوم";if(diff===1)return"غدًا";if(diff===2)return"بعد يومين";if(diff<=10)return"بعد "+diff+" أيام";return"بعد "+diff+" يومًا";}
 function statusBadge(st){if(st==="active")return'<span class="badge badge-active">في إجازة</span>';if(st==="upcoming")return'<span class="badge badge-upcoming">قادمة</span>';return'<span class="badge badge-ended">انتهت</span>';}
-async function loadAll(){var results=await Promise.all([api("leaves?status=eq.approved&select=*,employees(name)&order=start_date.asc"),api("employees?select=*")]);allLeaves=results[0]||[];allEmployees=results[1]||[];renderStats();renderToday();renderLeaves();renderNameOptions();}
+async function loadAll(){var results=await Promise.all([api("leaves?status=eq.approved&select=*,employees(name)&order=start_date.asc"),api("employees?select=*")]);allLeaves=results[0]||[];allEmployees=results[1]||[];renderStats();renderToday();renderLeaves();renderNameOptions();renderBalance();}
 function renderStats(){document.getElementById("stat-employees").textContent=allEmployees.length;document.getElementById("stat-active").textContent=allLeaves.filter(function(l){return getStatus(l.start_date,l.end_date)==="active";}).length;document.getElementById("stat-upcoming").textContent=allLeaves.filter(function(l){return getStatus(l.start_date,l.end_date)==="upcoming";}).length;document.getElementById("stat-total").textContent=allLeaves.length;document.getElementById("today-date").textContent=fmtToday(new Date());}
 
 function todayDaysLabel(n){if(n===1)return"يوم واحد";if(n===2)return"يومان";if(n>=3&&n<=10)return n+" أيام";return n+" يوم";}
@@ -195,7 +195,7 @@ el.className="";el.innerHTML=html;
 function leaveCardHTML(name,start,end,days,st,countdown){
 var html='<div class="leave-card">';
 html+='<div class="leave-card-top"><span class="leave-card-name">'+name+'</span>'+statusBadge(st)+'</div>';
-html+='<div class="leave-card-range">'+fmt(start)+' - '+fmt(end)+'</div>';
+html+='<div class="leave-card-range">'+fmtRangeArrow(start,end)+'</div>';
 html+='<div class="leave-card-bottom"><span class="leave-card-days">'+dayWord(days)+'</span>'+(countdown?'<span class="days-until">'+countdown+'</span>':'')+'</div>';
 html+='</div>';
 return html;
@@ -234,7 +234,7 @@ var msg=currentLeaveFilter==="upcoming"?"لا توجد إجازات قادمة."
 el.className="";el.innerHTML=tabsHTML+'<div class="empty">'+msg+'</div>';
 return;
 }
-var table='<div class="table-scroll desktop-only"><table><thead><tr><th>الموظف</th><th class="col-date">تاريخ البداية</th><th class="col-date">تاريخ النهاية</th><th>عدد الأيام</th><th class="col-status">الحالة</th></tr></thead><tbody>';
+var table='<div class="table-scroll desktop-only"><table><thead><tr><th>الموظف</th><th class="col-date">الفترة</th><th>عدد الأيام</th><th class="col-status">الحالة</th></tr></thead><tbody>';
 var cards='<div class="mobile-cards mobile-only">';
 list.forEach(function(x){
 var l=x.l,st=x.st;
@@ -242,7 +242,7 @@ var name=l.employees?l.employees.name:(l.employee_name||"");
 var days=calcDays(l.start_date,l.end_date);
 var countdown=st==="upcoming"?daysUntilLabel(l.start_date):"";
 var countdownBlock=countdown?'<div class="days-until" style="margin-top:4px;">'+countdown+'</div>':"";
-table+='<tr><td>'+name+'</td><td class="date-cell">'+fmt(l.start_date)+countdownBlock+'</td><td class="date-cell">'+fmt(l.end_date)+'</td><td>'+dayWord(days)+'</td><td class="status-cell">'+statusBadge(st)+'</td></tr>';
+table+='<tr><td>'+name+'</td><td class="date-cell">'+fmtRangeArrow(l.start_date,l.end_date)+countdownBlock+'</td><td>'+dayWord(days)+'</td><td class="status-cell">'+statusBadge(st)+'</td></tr>';
 cards+=leaveCardHTML(name,l.start_date,l.end_date,days,st,countdown);
 });
 table+='</tbody></table></div>';
@@ -250,7 +250,7 @@ cards+='</div>';
 el.className="";el.innerHTML=tabsHTML+table+cards;
 }
 
-function renderNameOptions(){var sel=document.getElementById("req-name");var opts='<option value="">اختر اسمك</option>';allEmployees.forEach(function(e){opts+='<option value="'+e.name+'">'+e.name+'</option>';});sel.innerHTML=opts;}
+function renderNameOptions(){var sel=document.getElementById("req-name");var opts='<option value="">اختر اسمك</option>';allEmployees.forEach(function(e){opts+='<option value="'+e.name+'">'+e.name+'</option>';});sel.innerHTML=opts;}function renderBalance(){var el=document.getElementById("balance-table");el.className="";if(allEmployees.length===0){el.innerHTML='<div class="empty">لا يوجد موظفون</div>';return;}var table='<div class="table-scroll desktop-only"><table><thead><tr><th>الاسم</th><th>المتبقي</th></tr></thead><tbody>';var cards='<div class="mobile-cards mobile-only">';allEmployees.forEach(function(e){var remaining=getAllowance(e.name)-usedDaysThisYear(e.id);var remColor=remaining<=0?"#c53030":(remaining<=5?"#b7791f":"#2f9e6e");table+='<tr><td>'+e.name+'</td><td style="font-weight:700;color:'+remColor+';">'+remaining+' يوم</td></tr>';cards+='<div class="leave-card"><div class="leave-card-top"><span class="leave-card-name">'+e.name+'</span><span style="font-weight:700;color:'+remColor+';">'+remaining+' يوم</span></div></div>';});table+='</tbody></table></div>';cards+='</div>';el.innerHTML=table+cards;}
 async function submitRequest(){var sel=document.getElementById("req-name");var name=sel.value;var start=document.getElementById("req-start").value;var end=document.getElementById("req-end").value;var msg=document.getElementById("req-msg");msg.innerHTML="";
 if(!name){msg.innerHTML='<span style="color:#c53030">يرجى اختيار اسمك من القائمة</span>';return;}
 if(!start||!end){msg.innerHTML='<span style="color:#c53030">يرجى اختيار تاريخ البداية وتاريخ النهاية</span>';return;}
